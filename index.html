@@ -28,22 +28,23 @@
       overflow-x: hidden;
     }
 
-    /* ── Vanta 背景层 ── */
+    /* ── 背景图层 ── */
     #vanta-bg {
       position: fixed;
       inset: 0;
       z-index: 0;
+      background: url('backed.jpg') center center / cover no-repeat;
     }
 
-    /* 水墨叠层 —— 给 Vanta 上面罩一层半透纹理感 */
+    /* 水墨叠层 —— 在背景图上罩暗色 + 科技渐变 */
     #vanta-bg::after {
       content: '';
       position: absolute;
       inset: 0;
       background:
-        radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0,245,255,0.06) 0%, transparent 70%),
-        radial-gradient(ellipse 50% 40% at 80% 100%, rgba(255,0,255,0.05) 0%, transparent 60%),
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+        radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0,245,255,0.07) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 40% at 80% 100%, rgba(255,0,255,0.06) 0%, transparent 60%),
+        rgba(8, 10, 16, 0.68);
       pointer-events: none;
     }
 
@@ -79,21 +80,7 @@
       border-radius: 50%;
       object-fit: cover;
       border: 2px solid var(--cyan);
-      filter: drop-shadow(0 0 12px var(--cyan));
-    }
-
-    /* 头像占位 SVG（无真实图片时显示） */
-    .avatar-placeholder {
-      width: 110px;
-      height: 110px;
-      border-radius: 50%;
-      border: 2px solid var(--cyan);
-      box-shadow: 0 0 18px var(--cyan), inset 0 0 18px rgba(0,245,255,0.08);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 48px;
-      background: rgba(0,245,255,0.05);
+      box-shadow: 0 0 18px var(--cyan), 0 0 40px rgba(0,245,255,0.2);
       animation: pulse-ring 3s ease-in-out infinite;
     }
 
@@ -321,7 +308,9 @@
 
   <!-- Hero -->
   <div class="hero fade-in">
-    <div class="avatar-placeholder" title="Luca">🤖</div>
+    <div class="avatar-wrap">
+      <img src="pic.png" alt="Luca" />
+    </div>
     <h1 class="neon-title">Luca 的 AI 作品集</h1>
     <p class="subtitle">欢迎和我一起玩 AI ~~</p>
     <div class="ink-divider"></div>
