@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Luca 的 AI 作品集</title>
+  <style>
+    /* ── 基础重置 ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink: #0a0c10;
+      --fog: rgba(10,12,16,0.72);
+      --cyan: #00f5ff;
+      --magenta: #ff00ff;
+      --gold: #ffd700;
+      --white: #e8eaf0;
+      --card-bg: rgba(255,255,255,0.04);
+      --card-border: rgba(0,245,255,0.18);
+      --radius: 16px;
+    }
+
+    html, body {
+      min-height: 100vh;
+      background: var(--ink);
+      color: var(--white);
+      font-family: 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* ── Vanta 背景层 ── */
+    #vanta-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+    }
+
+    /* 水墨叠层 —— 给 Vanta 上面罩一层半透纹理感 */
+    #vanta-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0,245,255,0.06) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 40% at 80% 100%, rgba(255,0,255,0.05) 0%, transparent 60%),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+
+    /* ── 主内容 ── */
+    main {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 60px 20px 80px;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 18px;
+      padding-bottom: 56px;
+    }
+
+    /* 头像 */
+    .avatar-wrap {
+      position: relative;
+      width: 110px;
+      height: 110px;
+    }
+
+    .avatar-wrap img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--cyan);
+      filter: drop-shadow(0 0 12px var(--cyan));
+    }
+
+    /* 头像占位 SVG（无真实图片时显示） */
+    .avatar-placeholder {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      border: 2px solid var(--cyan);
+      box-shadow: 0 0 18px var(--cyan), inset 0 0 18px rgba(0,245,255,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      background: rgba(0,245,255,0.05);
+      animation: pulse-ring 3s ease-in-out infinite;
+    }
+
+    @keyframes pulse-ring {
+      0%, 100% { box-shadow: 0 0 14px var(--cyan), inset 0 0 14px rgba(0,245,255,0.08); }
+      50%       { box-shadow: 0 0 30px var(--cyan), 0 0 60px rgba(0,245,255,0.2), inset 0 0 20px rgba(0,245,255,0.12); }
+    }
+
+    /* 霓虹标题 */
+    .neon-title {
+      font-size: clamp(1.8rem, 6vw, 3rem);
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      background: linear-gradient(90deg, var(--cyan), var(--magenta), var(--gold), var(--cyan));
+      background-size: 300% 100%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradient-flow 6s linear infinite, glitch 8s step-end infinite;
+      text-shadow: none; /* text-shadow 不作用于 clip text，用 filter 代替 */
+      filter: drop-shadow(0 0 8px rgba(0,245,255,0.6));
+    }
+
+    @keyframes gradient-flow {
+      0%   { background-position: 0% 50%; }
+      100% { background-position: 300% 50%; }
+    }
+
+    /* 故障特效：偶尔位移 + 颜色分裂 */
+    @keyframes glitch {
+      0%, 95%, 100% { transform: translate(0); filter: drop-shadow(0 0 8px rgba(0,245,255,0.6)); }
+      96%  { transform: translate(-3px, 1px); filter: drop-shadow(-3px 0 0 var(--magenta)) drop-shadow(3px 0 0 var(--cyan)); }
+      97%  { transform: translate(3px, -1px); filter: drop-shadow(3px 0 0 var(--magenta)) drop-shadow(-3px 0 0 var(--cyan)); }
+      98%  { transform: translate(-2px, 2px); filter: drop-shadow(0 0 8px rgba(0,245,255,0.6)); }
+      99%  { transform: translate(2px, -2px); filter: drop-shadow(3px 0 0 var(--gold)) drop-shadow(-3px 0 0 var(--cyan)); }
+    }
+
+    .subtitle {
+      font-size: clamp(0.95rem, 2.5vw, 1.15rem);
+      color: rgba(232,234,240,0.7);
+      letter-spacing: 0.06em;
+    }
+
+    .contact {
+      font-size: 0.9rem;
+      color: var(--cyan);
+      opacity: 0.8;
+    }
+
+    /* 水墨分隔线 */
+    .ink-divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--cyan), var(--magenta), transparent);
+      opacity: 0.4;
+      margin: 8px 0;
+    }
+
+    /* ── Section 标题 ── */
+    .section-title {
+      font-size: clamp(1.1rem, 3vw, 1.4rem);
+      font-weight: 700;
+      color: var(--cyan);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-title::before {
+      content: '';
+      display: inline-block;
+      width: 4px;
+      height: 1.2em;
+      background: linear-gradient(180deg, var(--cyan), var(--magenta));
+      border-radius: 2px;
+    }
+
+    section { margin-bottom: 48px; }
+
+    /* ── 卡片网格 ── */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 22px 18px;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s cubic-bezier(.22,.68,0,1.2),
+                  box-shadow 0.3s ease,
+                  border-color 0.3s ease;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    /* 卡片顶部光晕 */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: -40%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80%;
+      height: 80%;
+      background: radial-gradient(circle, rgba(0,245,255,0.08) 0%, transparent 70%);
+      pointer-events: none;
+      transition: opacity 0.3s;
+      opacity: 0;
+    }
+
+    .card:hover {
+      transform: translateY(-6px) scale(1.02);
+      box-shadow: 0 8px 40px rgba(0,245,255,0.22), 0 0 0 1px rgba(0,245,255,0.4);
+      border-color: rgba(0,245,255,0.5);
+    }
+
+    .card:hover::before { opacity: 1; }
+
+    .card-icon { font-size: 2rem; line-height: 1; }
+
+    .card-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--white);
+    }
+
+    .card-desc {
+      font-size: 0.82rem;
+      color: rgba(232,234,240,0.5);
+      line-height: 1.5;
+    }
+
+    .card-link-hint {
+      font-size: 0.75rem;
+      color: var(--cyan);
+      opacity: 0.6;
+      margin-top: auto;
+    }
+
+    /* ── YouTube 嵌入 ── */
+    .video-section .video-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 400px;
+      aspect-ratio: 9/16;
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--card-border);
+      box-shadow: 0 0 30px rgba(0,245,255,0.15);
+      backdrop-filter: blur(8px);
+    }
+
+    .video-section .video-wrapper iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    .video-section .video-meta {
+      max-width: 400px;
+      margin-top: 14px;
+    }
+
+    .video-section .video-meta p {
+      font-size: 0.88rem;
+      color: rgba(232,234,240,0.65);
+      line-height: 1.6;
+    }
+
+    /* ── 页脚 ── */
+    footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 24px 20px 36px;
+      font-size: 0.8rem;
+      color: rgba(232,234,240,0.3);
+    }
+
+    /* ── 滚动进入动画 ── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── 响应式 ── */
+    @media (max-width: 600px) {
+      main { padding: 40px 16px 60px; }
+      .card-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+      .video-section .video-wrapper { max-width: 100%; }
+    }
+
+    @media (max-width: 400px) {
+      .card-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Vanta.js 背景 -->
+<div id="vanta-bg"></div>
+
+<main>
+
+  <!-- Hero -->
+  <div class="hero fade-in">
+    <div class="avatar-placeholder" title="Luca">🤖</div>
+    <h1 class="neon-title">Luca 的 AI 作品集</h1>
+    <p class="subtitle">欢迎和我一起玩 AI ~~</p>
+    <div class="ink-divider"></div>
+    <p class="contact">📮 lrj0316@163.com</p>
+  </div>
+
+  <!-- AI 游戏 -->
+  <section class="fade-in">
+    <h2 class="section-title">我的 AI 游戏</h2>
+    <div class="card-grid">
+      <a class="card" href="https://fire.ailuca.tech/" target="_blank" rel="noopener">
+        <span class="card-icon">🚀</span>
+        <span class="card-title">星际先锋</span>
+        <span class="card-desc">AI 驱动的太空射击冒险</span>
+        <span class="card-link-hint">fire.ailuca.tech →</span>
+      </a>
+      <a class="card" href="https://card.ailuca.tech/" target="_blank" rel="noopener">
+        <span class="card-icon">🃏</span>
+        <span class="card-title">卡牌游戏</span>
+        <span class="card-desc">策略与运气的对决</span>
+        <span class="card-link-hint">card.ailuca.tech →</span>
+      </a>
+      <a class="card" href="https://gomoku.ailuca.tech/" target="_blank" rel="noopener">
+        <span class="card-icon">⚫</span>
+        <span class="card-title">五子棋</span>
+        <span class="card-desc">挑战 AI 对手，争夺棋局</span>
+        <span class="card-link-hint">gomoku.ailuca.tech →</span>
+      </a>
+      <a class="card" href="https://chinese-chess.ailuca.tech/" target="_blank" rel="noopener">
+        <span class="card-icon">♟️</span>
+        <span class="card-title">中国象棋</span>
+        <span class="card-desc">千年棋艺，AI 对弈</span>
+        <span class="card-link-hint">chinese-chess.ailuca.tech →</span>
+      </a>
+      <a class="card" href="https://spideman.ailuca.tech/" target="_blank" rel="noopener">
+        <span class="card-icon">🕷️</span>
+        <span class="card-title">数字消除</span>
+        <span class="card-desc">消除方块，挑战高分</span>
+        <span class="card-link-hint">spideman.ailuca.tech →</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- AI 应用 -->
+  <section class="fade-in">
+    <h2 class="section-title">我的 AI 应用</h2>
+    <div class="card-grid">
+      <a class="card" href="https://www.doubao.com/share/code/4f920f548a279f42" target="_blank" rel="noopener">
+        <span class="card-icon">📐</span>
+        <span class="card-title">方程 3D 可视化</span>
+        <span class="card-desc">将数学方程渲染为震撼的三维图形</span>
+        <span class="card-link-hint">doubao.com →</span>
+      </a>
+      <a class="card" href="https://www.doubao.com/share/code/1e2e90bb7283591e" target="_blank" rel="noopener">
+        <span class="card-icon">📝</span>
+        <span class="card-title">单词听写助手</span>
+        <span class="card-desc">AI 语音听写，轻松备考</span>
+        <span class="card-link-hint">doubao.com →</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- 视频 -->
+  <section class="video-section fade-in">
+    <h2 class="section-title">和儿子的 101 件疯狂小事</h2>
+    <div class="video-wrapper">
+      <iframe
+        src="https://www.youtube.com/embed/5beXWsGab0E?rel=0&playsinline=1"
+        title="和儿子 101 件疯狂的小事"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+      ></iframe>
+    </div>
+    <div class="video-meta">
+      <p>记录和儿子一起完成的 101 件有趣又疯狂的挑战，每一件都充满欢笑与回忆。</p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="ink-divider" style="max-width:300px;margin:0 auto 12px;"></div>
+  © 2025 Luca · 用 AI 创造无限可能
+</footer>
+
+<!-- Three.js（Vanta 依赖） -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+<!-- Vanta Birds -->
+<script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.birds.min.js"></script>
+<script>
+  // ── Vanta 飞鸟背景 ──
+  VANTA.BIRDS({
+    el: '#vanta-bg',
+    mouseControls: true,
+    touchControls: true,
+    gyroControls: false,
+    minHeight: 200,
+    minWidth: 200,
+    scale: 1.0,
+    scaleMobile: 1.0,
+    backgroundColor: 0x0a0c10,       // 接近纯黑水墨底色
+    color1: 0x00f5ff,                 // 青色飞鸟
+    color2: 0xff00ff,                 // 品红飞鸟
+    colorMode: 'variance',
+    birdSize: 1.2,
+    wingSpan: 28,
+    speedLimit: 4,
+    separation: 60,
+    alignment: 40,
+    cohesion: 35,
+    quantity: 3,
+  });
+
+  // ── 滚动进入动画 ──
+  const observer = new IntersectionObserver(
+    (entries) => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
+    { threshold: 0.12 }
+  );
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
