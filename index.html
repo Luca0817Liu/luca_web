@@ -22,29 +22,20 @@
 
     html, body {
       min-height: 100vh;
-      background: var(--ink);
+      background: url('backed.jpg') center center / cover no-repeat fixed;
       color: var(--white);
       font-family: 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
       overflow-x: hidden;
     }
 
-    /* ── 背景图层 ── */
+    /* ── 科技叠层（浮在背景图上） ── */
     #vanta-bg {
       position: fixed;
       inset: 0;
       z-index: 0;
-      background: url('backed.jpg') center center / cover no-repeat;
-    }
-
-    /* 水墨叠层 —— 在背景图上罩暗色 + 科技渐变 */
-    #vanta-bg::after {
-      content: '';
-      position: absolute;
-      inset: 0;
       background:
         radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0,245,255,0.07) 0%, transparent 70%),
-        radial-gradient(ellipse 50% 40% at 80% 100%, rgba(255,0,255,0.06) 0%, transparent 60%),
-        rgba(8, 10, 16, 0.68);
+        radial-gradient(ellipse 50% 40% at 80% 100%, rgba(255,0,255,0.06) 0%, transparent 60%);
       pointer-events: none;
     }
 
@@ -396,34 +387,7 @@
   © 2025 Luca · 用 AI 创造无限可能
 </footer>
 
-<!-- Three.js（Vanta 依赖） -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-<!-- Vanta Birds -->
-<script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.birds.min.js"></script>
 <script>
-  // ── Vanta 飞鸟背景 ──
-  VANTA.BIRDS({
-    el: '#vanta-bg',
-    mouseControls: true,
-    touchControls: true,
-    gyroControls: false,
-    minHeight: 200,
-    minWidth: 200,
-    scale: 1.0,
-    scaleMobile: 1.0,
-    backgroundColor: 0x0a0c10,       // 接近纯黑水墨底色
-    color1: 0x00f5ff,                 // 青色飞鸟
-    color2: 0xff00ff,                 // 品红飞鸟
-    colorMode: 'variance',
-    birdSize: 1.2,
-    wingSpan: 28,
-    speedLimit: 4,
-    separation: 60,
-    alignment: 40,
-    cohesion: 35,
-    quantity: 3,
-  });
-
   // ── 滚动进入动画 ──
   const observer = new IntersectionObserver(
     (entries) => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
