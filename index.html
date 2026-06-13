@@ -546,6 +546,7 @@
       .masonry-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
       .app-icon-grid { grid-template-columns: 1fr; }
       .polaroid-scatter { gap: 6px; }
+      .tv-wrapper { min-width: 100% !important; }
     }
     @media (max-width: 400px) {
       .masonry-grid { grid-template-columns: 1fr; }
@@ -651,18 +652,45 @@
         <span>🌊 海洋公园</span>
       </div>
     </div>
-    <!-- 老电视机视频 -->
-    <div class="tv-wrapper">
-      <div class="tv-antenna"></div>
-      <div class="tv-screen" id="tvScreen">
-        <iframe id="tvIframe" src="https://player.bilibili.com/player.html?bvid=BV1vFJp6gEsu&autoplay=0&high_quality=1&danmaku=0" allowfullscreen frameborder="0"></iframe>
-        <div class="play-btn-sketch" id="playBtn" onclick="playTV()">
-          <div class="play-btn-inner">▶️</div>
+    <!-- 老电视机视频（三台并列） -->
+    <div style="display:flex;flex-wrap:wrap;gap:18px;justify-content:center;">
+      <!-- 电视1 -->
+      <div class="tv-wrapper" style="flex:1;min-width:260px;max-width:340px;">
+        <div class="tv-antenna"></div>
+        <div class="tv-screen">
+          <iframe src="https://player.bilibili.com/player.html?bvid=BV1vFJp6gEsu&autoplay=0&high_quality=1&danmaku=0" allowfullscreen frameborder="0"></iframe>
+          <div class="play-btn-sketch" onclick="playThis(this)">
+            <div class="play-btn-inner">▶️</div>
+          </div>
         </div>
+        <div class="tv-legs"><span></span><span></span></div>
+        <p class="tv-caption">📺 Luca与好奇的小企鹅</p>
       </div>
-      <div class="tv-legs"><span></span><span></span></div>
+      <!-- 电视2 -->
+      <div class="tv-wrapper" style="flex:1;min-width:260px;max-width:340px;">
+        <div class="tv-antenna"></div>
+        <div class="tv-screen">
+          <iframe src="https://player.bilibili.com/player.html?bvid=BV1SgJp6YEdB&autoplay=0&high_quality=1&danmaku=0" allowfullscreen frameborder="0"></iframe>
+          <div class="play-btn-sketch" onclick="playThis(this)">
+            <div class="play-btn-inner">▶️</div>
+          </div>
+        </div>
+        <div class="tv-legs"><span></span><span></span></div>
+        <p class="tv-caption">📺 海底隧道</p>
+      </div>
+      <!-- 电视3 -->
+      <div class="tv-wrapper" style="flex:1;min-width:260px;max-width:340px;">
+        <div class="tv-antenna"></div>
+        <div class="tv-screen">
+          <iframe src="https://player.bilibili.com/player.html?bvid=BV1HxJp6pEdr&autoplay=0&high_quality=1&danmaku=0" allowfullscreen frameborder="0"></iframe>
+          <div class="play-btn-sketch" onclick="playThis(this)">
+            <div class="play-btn-inner">▶️</div>
+          </div>
+        </div>
+        <div class="tv-legs"><span></span><span></span></div>
+        <p class="tv-caption">📺 Ocean Park · BBC Style</p>
+      </div>
     </div>
-    <p class="tv-caption">📺 Luca与好奇的小企鹅</p>
   </section>
 
   <!-- ══ AI 应用卡片 ══ -->
@@ -760,21 +788,13 @@
 /* ═══════════════════════════════════════════
    老电视播放
 ═══════════════════════════════════════════ */
-function playTV() {
-  const btn = document.getElementById('playBtn');
-  const iframe = document.getElementById('tvIframe');
-  // 重新加载 iframe 并自动播放
+function playThis(btn) {
+  const screen = btn.parentElement;
+  const iframe = screen.querySelector('iframe');
   const src = iframe.src;
   iframe.src = src.replace('autoplay=0', 'autoplay=1');
   btn.classList.add('hidden');
 }
-// 初始 iframe 加载时重置按钮
-document.getElementById('tvIframe').addEventListener('load', function() {
-  const btn = document.getElementById('playBtn');
-  if (btn && !this.src.includes('autoplay=1')) {
-    btn.classList.remove('hidden');
-  }
-});
 
 /* ═══════════════════════════════════════════
    滚动动画
