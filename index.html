@@ -4,117 +4,130 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Luca 的 AI 作品集</title>
+  <!-- 手写体 + 圆润字体 -->
+  <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --pink:      #FF9CAB;
-      --sky:       #7EC8E3;
-      --sun:       #FFD966;
-      --mint:      #8DD1B9;
-      --lavender:  #C3AED6;
-      --cream:     #FFF8F0;
-      --warm-white:#FFFDF7;
-      --text-dark: #4A3728;
-      --text-mid:  #8B7355;
-      --card-bg:   rgba(255, 255, 255, 0.72);
-      --card-border: rgba(255, 156, 171, 0.45);
-      --radius: 20px;
+      --paper:      #FFF9F0;
+      --paper-dark: #F5ECD7;
+      --pink:       #FF8FAB;
+      --coral:      #FFB3B3;
+      --sky:        #89CFF0;
+      --mint:       #A8E6CF;
+      --sun:        #FFE066;
+      --lavender:   #C5B4E3;
+      --text-main:  #5D4037;
+      --text-light: #8D6E63;
+      --card-bg:    rgba(255, 255, 250, 0.85);
+      --radius-sm:  10px;
+      --radius-lg:  24px;
     }
 
+    /* ── 牛皮纸纹理背景 ── */
     html, body {
       min-height: 100vh;
-      color: var(--text-dark);
-      font-family: 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
+      color: var(--text-main);
+      font-family: 'Ma Shan Zheng', 'ZCOOL KuaiLe', 'PingFang SC', 'Microsoft YaHei', cursive, sans-serif;
       overflow-x: hidden;
-      background: var(--cream);
+      background-color: var(--paper);
+      background-image:
+        url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='60' height='60' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
     }
 
-    /* ── 第一层：原始背景图（轻虚化+明亮） ── */
-    #bg-photo {
+    /* ── 背景涂鸦元素 ── */
+    #bg-doodles {
       position: fixed;
       inset: 0;
       z-index: 0;
-      background: url('backed.jpg') center center / cover no-repeat;
-      filter: blur(6px) brightness(0.85) saturate(1.1);
-      transform: scale(1.04);
-    }
-
-    /* ── 第二层：柔和暖色调渐变 ── */
-    #bg-gradient {
-      position: fixed;
-      inset: 0;
-      z-index: 1;
-      background:
-        radial-gradient(ellipse 70% 50% at 15% 20%, rgba(255, 156, 171, 0.35) 0%, transparent 55%),
-        radial-gradient(ellipse 60% 60% at 85% 75%, rgba(142, 209, 185, 0.35) 0%, transparent 50%),
-        radial-gradient(ellipse 50% 60% at 50% 40%, rgba(255, 248, 240, 0.75) 0%, transparent 100%),
-        radial-gradient(ellipse 40% 50% at 70% 15%, rgba(126, 200, 227, 0.3) 0%, transparent 55%),
-        linear-gradient(160deg, #FFFDF7 0%, #FFF0F3 30%, #F0F7FF 60%, #FFF8F0 100%);
       pointer-events: none;
+      overflow: hidden;
     }
-
-    /* ── 第三层：卡通波点纹理 ── */
-    #dots-pattern {
-      position: fixed;
-      inset: 0;
-      z-index: 2;
-      background-image: radial-gradient(circle, rgba(255,156,171,0.15) 1px, transparent 1px);
-      background-size: 32px 32px;
-      pointer-events: none;
+    .bg-doodle {
+      position: absolute;
+      opacity: 0.12;
+      animation: doodle-float 8s ease-in-out infinite;
+    }
+    .bg-doodle:nth-child(odd) { animation-duration: 10s; animation-delay: -3s; }
+    .bg-doodle:nth-child(3n)   { animation-duration: 7s; animation-delay: -1.5s; }
+    @keyframes doodle-float {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      33%      { transform: translateY(-18px) rotate(3deg); }
+      66%      { transform: translateY(8px) rotate(-2deg); }
     }
 
     /* ── 主内容 ── */
     main {
       position: relative;
       z-index: 10;
-      max-width: 920px;
+      max-width: 960px;
       margin: 0 auto;
-      padding: 60px 20px 80px;
+      padding: 50px 20px 80px;
     }
 
-    /* ── Hero ── */
+    /* ═══════ Hero Section ═══════ */
     .hero {
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
-      gap: 18px;
-      padding-bottom: 64px;
-    }
-
-    /* 头像 */
-    .avatar-wrap {
+      gap: 16px;
+      padding: 20px 0 60px;
       position: relative;
-      width: 120px;
-      height: 120px;
     }
-
-    .avatar-wrap::before,
-    .avatar-wrap::after {
+    /* Hero 背景波浪线 */
+    .hero::before {
       content: '';
       position: absolute;
-      inset: -8px;
+      top: 30px;
+      left: 5%;
+      width: 90%;
+      height: 80%;
+      z-index: -1;
+      background:
+        url("data:image/svg+xml,%3Csvg width='800' height='400' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50,80 Q150,40 250,80 T450,80 T650,80' fill='none' stroke='%23FF8FAB' stroke-width='2' stroke-dasharray='8,4' opacity='0.35'/%3E%3Cpath d='M30,120 Q180,80 300,125 T550,125' fill='none' stroke='%2389CFF0' stroke-width='1.5' opacity='0.3'/%3E%3Ccircle cx='680' cy='60' r='15' fill='%23FFE066' opacity='0.4'/%3E%3Ccircle cx='100' cy='30' r='10' fill='%23A8E6CF' opacity='0.35'/%3E%3Ccircle cx='720' cy='140' r='8' fill='%23C5B4E3' opacity='0.3'/%3E%3Ccircle cx='60' cy='180' r='12' fill='%23FFB3B3' opacity='0.35'/%3E%3Ctext x='400' y='200' font-size='16' fill='%23FF8FAB' opacity='0.25' text-anchor='middle' font-family='cursive'%3E✧ ✦ ✧ ✦ ✧ ✦ ✧ ✦ ✧ ✦ ✧ ✦ ✧ ✦ ✧%3C/text%3E%3C/svg%3E") center/contain no-repeat;
+    }
+
+    /* 头像区域 */
+    .avatar-wrap {
+      position: relative;
+      width: 130px;
+      height: 130px;
+    }
+    /* 手绘虚线圆环 */
+    .avatar-ring {
+      position: absolute;
+      inset: -12px;
       border-radius: 50%;
-      border: 3px solid transparent;
-      background: linear-gradient(135deg, var(--pink), var(--sky), var(--sun), var(--mint)) border-box;
-      -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite: destination-out;
-      mask-composite: exclude;
-      animation: ring-spin 5s linear infinite;
+      border: 3px dashed var(--coral);
+      animation: ring-spin 12s linear infinite;
     }
-
-    .avatar-wrap::after {
-      inset: -14px;
-      border: 2px dashed transparent;
-      background: linear-gradient(225deg, var(--sun), transparent, var(--pink)) border-box;
-      animation: ring-spin 8s linear infinite reverse;
-      opacity: 0.7;
+    .avatar-ring:nth-child(2) {
+      inset: -20px;
+      border-color: var(--sky);
+      border-style: dotted;
+      animation-duration: 16s;
+      animation-direction: reverse;
     }
-
     @keyframes ring-spin {
       from { transform: rotate(0deg); }
       to   { transform: rotate(360deg); }
+    }
+
+    /* 头像周围小图标 */
+    .avatar-icon {
+      position: absolute;
+      font-size: 1.5rem;
+      animation: icon-bounce 3s ease-in-out infinite;
+    }
+    .avatar-icon:nth-child(3) { top: -15px; left: -20px; animation-delay: 0s; }
+    .avatar-icon:nth-child(4) { top: -15px; right: -20px; animation-delay: 0.6s; }
+    .avatar-icon:nth-child(5) { bottom: -10px; left: -15px; animation-delay: 1.2s; }
+    .avatar-icon:nth-child(6) { bottom: -10px; right: -15px; animation-delay: 1.8s; }
+    @keyframes icon-bounce {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50%      { transform: translateY(-6px) scale(1.15); }
     }
 
     .avatar-wrap img {
@@ -122,426 +135,653 @@
       height: 100%;
       border-radius: 50%;
       object-fit: cover;
-      border: 3px solid rgba(255,156,171,0.5);
+      border: 4px solid white;
       box-shadow:
-        0 0 20px rgba(255,156,171,0.35),
-        0 0 50px rgba(126,200,227,0.25),
-        0 4px 15px rgba(0,0,0,0.08);
+        0 4px 20px rgba(0,0,0,0.1),
+        0 0 0 6px rgba(255,143,171,0.25);
+      filter: saturate(1.05) contrast(1.05);
     }
 
-    /* 标题 */
-    .neon-title {
-      font-size: clamp(1.8rem, 6vw, 3rem);
-      font-weight: 900;
-      letter-spacing: 0.04em;
-      background: linear-gradient(90deg, var(--pink) 0%, #F9A8D4 20%, var(--sky) 45%, var(--mint) 70%, var(--sun) 100%);
-      background-size: 200% 100%;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      animation: candy-flow 4s ease-in-out infinite, title-bounce 2s ease-in-out infinite;
-      filter: drop-shadow(0 2px 4px rgba(255,156,171,0.3));
+    /* 主标题 - 手写体 */
+    .candy-title {
+      font-family: 'ZCOOL KuaiLe', 'Ma Shan Zheng', cursive;
+      font-size: clamp(2rem, 6vw, 3.2rem);
+      font-weight: 700;
+      color: var(--text-main);
+      text-shadow: 3px 3px 0px rgba(255,143,171,0.3), -1px -1px 0px rgba(137,207,240,0.2);
+      letter-spacing: 0.06em;
+      animation: title-wiggle 0.5s ease-in-out infinite alternate;
+      position: relative;
     }
-
-    @keyframes candy-flow {
-      0%, 100% { background-position: 0% 50%; }
-      50%      { background-position: 100% 50%; }
+    @keyframes title-wiggle {
+      from { transform: rotate(-0.5deg); }
+      to   { transform: rotate(0.5deg); }
     }
-
-    @keyframes title-bounce {
-      0%, 100% { transform: translateY(0); }
-      50%      { transform: translateY(-3px); }
+    .candy-title::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 10%;
+      width: 80%;
+      height: 4px;
+      background: repeating-linear-gradient(90deg, var(--pink) 0px, var(--pink) 20px, var(--sun) 20px, var(--sun) 30px, var(--sky) 30px, var(--sky) 50px, var(--mint) 50px, var(--mint) 60px);
+      border-radius: 2px;
+      opacity: 0.6;
     }
 
     .subtitle {
-      font-size: clamp(0.95rem, 2.5vw, 1.15rem);
-      color: var(--text-mid);
-      letter-spacing: 0.06em;
+      font-size: 1.1rem;
+      color: var(--text-light);
+      letter-spacing: 0.05em;
     }
 
     .contact {
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       color: var(--pink);
-      opacity: 0.85;
       letter-spacing: 0.04em;
     }
 
-    /* 彩虹分隔线 */
-    .holo-divider {
+    /* 手绘分隔线 */
+    .sketch-divider {
       width: 100%;
-      max-width: 400px;
+      max-width: 300px;
+      height: 14px;
+      background: url("data:image/svg+xml,%3Csvg width='300' height='14' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10,7 Q40,0 80,7 T160,7 T240,7 T290,7' fill='none' stroke='%23FF8FAB' stroke-width='2' stroke-linecap='round' opacity='0.5'/%3E%3Ccircle cx='150' cy='7' r='4' fill='%23FFE066' opacity='0.6'/%3E%3Ccircle cx='80' cy='7' r='2.5' fill='%23A8E6CF' opacity='0.5'/%3E%3Ccircle cx='220' cy='7' r='2.5' fill='%2389CFF0' opacity='0.5'/%3E%3C/svg%3E") center/contain no-repeat;
+      margin: 0 auto;
+    }
+
+    /* ═══════ Section 标题 ═══════ */
+    .section-head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+    .section-head .doodle-icon {
+      font-size: 1.6rem;
+      flex-shrink: 0;
+    }
+    .section-head h2 {
+      font-family: 'ZCOOL KuaiLe', 'Ma Shan Zheng', cursive;
+      font-size: clamp(1.1rem, 2.8vw, 1.4rem);
+      color: var(--text-main);
+      letter-spacing: 0.06em;
+      position: relative;
+    }
+    .section-head h2::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 100%;
       height: 3px;
-      background: linear-gradient(90deg, transparent, var(--pink), var(--sun), var(--mint), var(--sky), var(--lavender), transparent);
+      background: var(--sun);
       border-radius: 2px;
       opacity: 0.7;
     }
+    section { margin-bottom: 56px; }
 
-    /* ── Section 标题 ── */
-    .section-title {
-      font-size: clamp(1.0rem, 2.8vw, 1.35rem);
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      margin-bottom: 24px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      color: var(--text-dark);
-    }
-
-    .section-title .title-bar {
-      width: 5px;
-      height: 1.3em;
-      background: linear-gradient(180deg, var(--pink), var(--sun), var(--mint));
-      border-radius: 3px;
-      flex-shrink: 0;
-      box-shadow: 0 0 8px rgba(255,156,171,0.4);
-    }
-
-    .section-title .title-text {
-      background: linear-gradient(90deg, var(--text-dark), var(--pink));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    section { margin-bottom: 52px; }
-
-    /* ── 卡片网格 ── */
-    .card-grid {
+    /* ═══════ 瀑布流卡片（AI 作品） ═══════ */
+    .masonry-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 16px;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 20px;
     }
-
-    .card {
+    .sketch-card {
+      position: relative;
       background: var(--card-bg);
-      border: 2px dashed var(--card-border);
-      border-radius: var(--radius);
-      padding: 22px 18px;
+      border: 3px dashed var(--coral);
+      border-radius: var(--radius-lg);
+      padding: 20px 16px;
       text-decoration: none;
-      color: var(--text-dark);
+      color: inherit;
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      position: relative;
-      overflow: hidden;
-      transition: transform 0.35s cubic-bezier(.34,1.56,.64,1),
-                  box-shadow 0.3s ease,
-                  border-color 0.3s ease;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      gap: 8px;
+      transition: transform 0.35s cubic-bezier(.34,1.56,.64,1), box-shadow 0.3s, border-color 0.3s;
+      box-shadow: 3px 4px 0px rgba(0,0,0,0.06), 0 2px 12px rgba(0,0,0,0.04);
+      overflow: visible;
+    }
+    .sketch-card:hover {
+      transform: translateY(-6px) rotate(-1deg) scale(1.03);
+      box-shadow: 5px 8px 0px rgba(255,143,171,0.2), 0 10px 30px rgba(0,0,0,0.08);
+      border-color: var(--sun);
+      border-style: solid;
+      z-index: 5;
     }
 
-    /* 卡通圆角色块装饰 */
-    .card::before {
-      content: '';
+    /* AI 生成标签 */
+    .ai-badge {
       position: absolute;
-      top: -20px;
-      right: -20px;
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      background: rgba(255,156,171,0.12);
-      pointer-events: none;
-      transition: transform 0.4s cubic-bezier(.34,1.56,.64,1);
-    }
-
-    .card::after {
-      content: '';
-      position: absolute;
-      bottom: -15px;
-      left: -15px;
-      width: 45px;
-      height: 45px;
-      border-radius: 50%;
-      background: rgba(126,200,227,0.12);
-      pointer-events: none;
-      transition: transform 0.4s cubic-bezier(.34,1.56,.64,1);
-    }
-
-    .card:hover {
-      transform: translateY(-8px) scale(1.03);
-      box-shadow:
-        0 8px 30px rgba(255,156,171,0.25),
-        0 0 0 2px rgba(255,217,102,0.5),
-        0 4px 12px rgba(0,0,0,0.06);
-      border-color: rgba(255,217,102,0.7);
-    }
-
-    .card:hover::before { transform: scale(1.4) translate(-5px, 5px); }
-    .card:hover::after  { transform: scale(1.4) translate(5px, -5px); }
-
-    .card-icon { font-size: 2rem; line-height: 1; }
-
-    .card-title {
-      font-size: 1rem;
+      top: -10px;
+      right: 12px;
+      background: var(--sun);
+      color: var(--text-main);
+      font-size: 0.7rem;
+      padding: 3px 10px;
+      border-radius: 12px;
+      border: 2px dotted var(--pink);
       font-weight: 700;
-      color: var(--text-dark);
-    }
-
-    .card-desc {
-      font-size: 0.82rem;
-      color: var(--text-mid);
-      line-height: 1.55;
-    }
-
-    .card-link-hint {
-      font-size: 0.75rem;
-      color: var(--pink);
-      opacity: 0.8;
-      margin-top: auto;
-      letter-spacing: 0.03em;
-    }
-
-    /* ── 视频横排 ── */
-    .video-row {
-      display: flex;
-      gap: 14px;
-    }
-
-    .video-col {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .video-col .video-caption {
-      margin-top: 8px;
-      font-size: 0.82rem;
-      color: var(--text-mid);
-      text-align: center;
       letter-spacing: 0.04em;
+      white-space: nowrap;
+      z-index: 2;
     }
 
-    /* ── 视频区 ── */
-    .video-section .video-wrapper {
+    /* 悬停气泡 */
+    .idea-bubble {
+      position: absolute;
+      bottom: 110%;
+      left: 50%;
+      transform: translateX(-50%) scale(0);
+      background: white;
+      border: 2px solid var(--pink);
+      border-radius: 16px;
+      padding: 10px 14px;
+      font-size: 0.78rem;
+      color: var(--text-main);
+      white-space: nowrap;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+      transition: transform 0.3s cubic-bezier(.34,1.56,.64,1);
+      pointer-events: none;
+      z-index: 10;
+    }
+    .idea-bubble::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 8px solid transparent;
+      border-top-color: var(--pink);
+    }
+    .sketch-card:hover .idea-bubble {
+      transform: translateX(-50%) scale(1);
+    }
+
+    .sketch-card .card-icon { font-size: 2.2rem; line-height: 1; }
+    .sketch-card .card-title {
+      font-family: 'ZCOOL KuaiLe', cursive;
+      font-size: 1.05rem;
+      font-weight: 700;
+    }
+    .sketch-card .card-desc {
+      font-size: 0.8rem;
+      color: var(--text-light);
+      line-height: 1.5;
+    }
+    .sketch-card .card-link {
+      font-size: 0.72rem;
+      color: var(--sky);
+      margin-top: auto;
+    }
+
+    /* ═══════ 个人多媒体：拍立得 + 老电视 ═══════ */
+    /* 拍立得图片区 */
+    .polaroid-scatter {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      padding: 10px 0;
+    }
+    .polaroid {
+      background: white;
+      padding: 10px 10px 35px;
+      box-shadow: 3px 5px 15px rgba(0,0,0,0.1);
+      border-radius: 3px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+    }
+    .polaroid:nth-child(1) { transform: rotate(-4deg); }
+    .polaroid:nth-child(2) { transform: rotate(3deg); margin-top: 15px; }
+    .polaroid:nth-child(3) { transform: rotate(-2deg); margin-top: -5px; }
+    .polaroid:hover {
+      transform: rotate(0deg) scale(1.06) !important;
+      box-shadow: 5px 10px 30px rgba(0,0,0,0.15);
+      z-index: 5;
+    }
+    .polaroid span {
+      position: absolute;
+      bottom: 8px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 0.7rem;
+      color: var(--text-light);
+      font-style: italic;
+    }
+
+    /* 老式电视机视频框 */
+    .tv-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 500px;
+      margin: 30px auto 10px;
+      background: #E8D5B7;
+      border-radius: 18px;
+      padding: 18px 18px 10px;
+      box-shadow:
+        inset 0 2px 8px rgba(0,0,0,0.1),
+        4px 6px 0px rgba(0,0,0,0.15),
+        0 10px 30px rgba(0,0,0,0.12);
+    }
+    .tv-screen {
       position: relative;
       width: 100%;
       aspect-ratio: 9/16;
-      border-radius: var(--radius);
+      background: #1a1a2e;
+      border-radius: 12px;
       overflow: hidden;
-      border: 2px solid rgba(255,156,171,0.4);
-      box-shadow: 0 4px 25px rgba(255,156,171,0.2), 0 2px 50px rgba(126,200,227,0.15);
-      backdrop-filter: blur(8px);
+      box-shadow: inset 0 0 30px rgba(0,0,0,0.5);
     }
-
-    .video-section .video-wrapper iframe {
+    .tv-screen iframe {
       position: absolute;
       inset: 0;
       width: 100%;
       height: 100%;
       border: 0;
     }
+    /* 手绘播放按钮 */
+    .play-btn-sketch {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.25);
+      cursor: pointer;
+      z-index: 5;
+      transition: opacity 0.3s;
+    }
+    .play-btn-sketch.hidden { opacity: 0; pointer-events: none; }
+    .play-btn-inner {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      color: var(--pink);
+      border: 3px dashed var(--coral);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+      animation: btn-pulse 2s ease-in-out infinite;
+    }
+    @keyframes btn-pulse {
+      0%, 100% { transform: scale(1); }
+      50%      { transform: scale(1.08); }
+    }
+    /* 电视机天线 */
+    .tv-antenna {
+      position: absolute;
+      top: -25px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 4px;
+      height: 25px;
+      background: #8D6E63;
+      border-radius: 2px;
+    }
+    .tv-antenna::after {
+      content: '';
+      position: absolute;
+      top: -8px;
+      left: -12px;
+      width: 28px;
+      height: 8px;
+      border: 2px solid #8D6E63;
+      border-bottom: none;
+      border-radius: 12px 12px 0 0;
+    }
+    .tv-legs {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 30px 0;
+      opacity: 0.6;
+    }
+    .tv-legs span {
+      width: 12px;
+      height: 14px;
+      background: #8D6E63;
+      border-radius: 0 0 6px 6px;
+    }
 
-    /* ── 页脚 ── */
+    /* 视频标题 */
+    .tv-caption {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 0.85rem;
+      color: var(--text-light);
+      letter-spacing: 0.04em;
+    }
+
+    /* ═══════ AI 应用卡片 ═══════ */
+    .app-icon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 18px;
+    }
+    .app-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: var(--card-bg);
+      border: 2px dotted var(--sky);
+      border-radius: var(--radius-lg);
+      padding: 16px 18px;
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.3s cubic-bezier(.34,1.56,.64,1), box-shadow 0.3s, border-color 0.3s;
+      box-shadow: 2px 3px 0px rgba(0,0,0,0.05);
+    }
+    .app-card:hover {
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 4px 6px 0px rgba(137,207,240,0.2), 0 8px 20px rgba(0,0,0,0.08);
+      border-color: var(--pink);
+    }
+    .app-card .app-icon {
+      font-size: 2.6rem;
+      flex-shrink: 0;
+      width: 56px;
+      text-align: center;
+    }
+    .app-card .app-info .app-name {
+      font-family: 'ZCOOL KuaiLe', cursive;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+    .app-card .app-info .app-desc {
+      font-size: 0.78rem;
+      color: var(--text-light);
+      margin-top: 3px;
+    }
+
+    /* ═══════ 页脚 ═══════ */
     footer {
       position: relative;
       z-index: 10;
       text-align: center;
       padding: 24px 20px 36px;
-      font-size: 0.8rem;
-      color: var(--text-mid);
+      font-size: 0.82rem;
+      color: var(--text-light);
       letter-spacing: 0.04em;
     }
 
-    /* ── 浮动卡通装饰 ── */
-    .particle-field {
+    /* ═══════ 浮动涂鸦 ═══════ */
+    .float-doodles {
       position: fixed;
       inset: 0;
       z-index: 4;
       pointer-events: none;
       overflow: hidden;
     }
-
-    .particle {
+    .float-item {
       position: absolute;
-      animation: float-up linear infinite;
+      animation: float-rise linear infinite;
       opacity: 0;
-      font-size: 1.4rem;
+      font-size: 1.5rem;
+    }
+    @keyframes float-rise {
+      0%   { opacity: 0; transform: translateY(0) rotate(0deg) scale(0.5); }
+      8%   { opacity: 0.7; }
+      88%  { opacity: 0.35; }
+      100% { opacity: 0; transform: translateY(-100vh) rotate(25deg) scale(1.1); }
     }
 
-    @keyframes float-up {
-      0%   { opacity: 0;   transform: translateY(0) scale(0.6) rotate(0deg); }
-      10%  { opacity: 0.8; }
-      85%  { opacity: 0.5; }
-      100% { opacity: 0;   transform: translateY(-100vh) scale(1.1) rotate(20deg); }
-    }
-
-    /* ── 滚动进入动画 ── */
+    /* ═══════ 滚动动画 ═══════ */
     .fade-in {
       opacity: 0;
-      transform: translateY(28px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
     }
-
     .fade-in.visible {
       opacity: 1;
       transform: translateY(0);
     }
 
-    /* ── 响应式 ── */
-    @media (max-width: 768px) {
-    }
-
+    /* ═══════ 响应式 ═══════ */
     @media (max-width: 600px) {
-      main { padding: 40px 16px 60px; }
-      .card-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
-      .video-row { flex-direction: column; }
+      main { padding: 32px 14px 50px; }
+      .masonry-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
+      .app-icon-grid { grid-template-columns: 1fr; }
+      .polaroid-scatter { gap: 6px; }
     }
-
     @media (max-width: 400px) {
-      .card-grid { grid-template-columns: 1fr; }
+      .masonry-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
 
-<!-- 背景层 -->
-<div id="bg-photo"></div>
-<div id="bg-gradient"></div>
-<div id="dots-pattern"></div>
+<!-- 背景手绘涂鸦 -->
+<div id="bg-doodles"></div>
 
-<!-- 浮动卡通装饰 -->
-<div class="particle-field" id="particle-field"></div>
+<!-- 浮动小涂鸦 -->
+<div class="float-doodles" id="float-doodles"></div>
 
 <main>
 
-  <!-- Hero -->
+  <!-- ══ Hero ══ -->
   <div class="hero fade-in">
     <div class="avatar-wrap">
+      <div class="avatar-ring"></div>
+      <div class="avatar-ring"></div>
+      <span class="avatar-icon">🤖</span>
+      <span class="avatar-icon">🎨</span>
+      <span class="avatar-icon">📷</span>
+      <span class="avatar-icon">💡</span>
       <img src="pic.png" alt="Luca" />
     </div>
-    <h1 class="neon-title">Luca 的 AI 作品集</h1>
+    <h1 class="candy-title">Luca 的 AI 作品集</h1>
     <p class="subtitle">✨ 欢迎和我一起玩 AI ~~ ✨</p>
-    <div class="holo-divider"></div>
+    <div class="sketch-divider"></div>
     <p class="contact">📮 lrj0316@163.com</p>
   </div>
 
-  <!-- AI 游戏 -->
+  <!-- ══ AI 游戏（瀑布流手绘卡片） ══ -->
   <section class="fade-in">
-    <h2 class="section-title">
-      <span class="title-bar"></span>
-      <span class="title-text">🎮 我的 AI 游戏</span>
-    </h2>
-    <div class="card-grid">
-      <a class="card" href="https://fire.ailuca.tech/" target="_blank" rel="noopener">
+    <div class="section-head">
+      <span class="doodle-icon">🎮</span>
+      <h2>我 的 AI 游 戏</h2>
+    </div>
+    <div class="masonry-grid">
+      <!-- 卡片1 -->
+      <a class="sketch-card" href="https://fire.ailuca.tech/" target="_blank" rel="noopener">
+        <span class="ai-badge">🤖 AI生成</span>
+        <span class="idea-bubble">💭 让AI设计飞船移动轨迹</span>
         <span class="card-icon">🚀</span>
         <span class="card-title">星际先锋</span>
         <span class="card-desc">AI 驱动的太空射击冒险</span>
-        <span class="card-link-hint">fire.ailuca.tech →</span>
+        <span class="card-link">fire.ailuca.tech →</span>
       </a>
-      <a class="card" href="https://card.ailuca.tech/" target="_blank" rel="noopener">
+      <!-- 卡片2 -->
+      <a class="sketch-card" href="https://card.ailuca.tech/" target="_blank" rel="noopener">
+        <span class="ai-badge">🤖 AI生成</span>
+        <span class="idea-bubble">💭 AI学习卡牌平衡算法</span>
         <span class="card-icon">🃏</span>
         <span class="card-title">卡牌游戏</span>
         <span class="card-desc">策略与运气的对决</span>
-        <span class="card-link-hint">card.ailuca.tech →</span>
+        <span class="card-link">card.ailuca.tech →</span>
       </a>
-      <a class="card" href="https://gomoku.ailuca.tech/" target="_blank" rel="noopener">
+      <!-- 卡片3 -->
+      <a class="sketch-card" href="https://gomoku.ailuca.tech/" target="_blank" rel="noopener">
+        <span class="ai-badge">🤖 AI生成</span>
+        <span class="idea-bubble">💭 用AI训练五子棋策略模型</span>
         <span class="card-icon">⚫</span>
         <span class="card-title">五子棋</span>
         <span class="card-desc">挑战 AI 对手，争夺棋局</span>
-        <span class="card-link-hint">gomoku.ailuca.tech →</span>
+        <span class="card-link">gomoku.ailuca.tech →</span>
       </a>
-      <a class="card" href="https://chinese-chess.ailuca.tech/" target="_blank" rel="noopener">
+      <!-- 卡片4 -->
+      <a class="sketch-card" href="https://chinese-chess.ailuca.tech/" target="_blank" rel="noopener">
+        <span class="ai-badge">🤖 AI生成</span>
+        <span class="idea-bubble">💭 象棋AI的博弈树搜索</span>
         <span class="card-icon">♟️</span>
         <span class="card-title">中国象棋</span>
         <span class="card-desc">千年棋艺，AI 对弈</span>
-        <span class="card-link-hint">chinese-chess.ailuca.tech →</span>
+        <span class="card-link">chinese-chess.ailuca.tech →</span>
       </a>
-      <a class="card" href="https://spideman.ailuca.tech/" target="_blank" rel="noopener">
+      <!-- 卡片5 -->
+      <a class="sketch-card" href="https://spideman.ailuca.tech/" target="_blank" rel="noopener">
+        <span class="ai-badge">🤖 AI生成</span>
+        <span class="idea-bubble">💭 动态难度由AI实时调整</span>
         <span class="card-icon">🕷️</span>
         <span class="card-title">数字消除</span>
         <span class="card-desc">消除方块，挑战高分</span>
-        <span class="card-link-hint">spideman.ailuca.tech →</span>
+        <span class="card-link">spideman.ailuca.tech →</span>
       </a>
     </div>
   </section>
 
-  <!-- AI 应用 -->
+  <!-- ══ 个人多媒体：拍立得图片 + 老电视视频 ══ -->
   <section class="fade-in">
-    <h2 class="section-title">
-      <span class="title-bar"></span>
-      <span class="title-text">🛠️ 我的 AI 应用</span>
-    </h2>
-    <div class="card-grid">
-      <a class="card" href="https://www.doubao.com/share/code/4f920f548a279f42" target="_blank" rel="noopener">
-        <span class="card-icon">📐</span>
-        <span class="card-title">方程 3D 可视化</span>
-        <span class="card-desc">将数学方程渲染为震撼的三维图形</span>
-        <span class="card-link-hint">doubao.com →</span>
-      </a>
-      <a class="card" href="https://www.doubao.com/share/code/1e2e90bb7283591e" target="_blank" rel="noopener">
-        <span class="card-icon">📝</span>
-        <span class="card-title">单词听写助手</span>
-        <span class="card-desc">AI 语音听写，轻松备考</span>
-        <span class="card-link-hint">doubao.com →</span>
-      </a>
+    <div class="section-head">
+      <span class="doodle-icon">📸</span>
+      <h2>我 的 多 媒 体 角</h2>
     </div>
+    <!-- 拍立得 -->
+    <div class="polaroid-scatter">
+      <div class="polaroid">
+        <img src="pic.png" alt="Luca" style="width:120px;height:120px;object-fit:cover;border-radius:2px;" />
+        <span>✨ 小Luca</span>
+      </div>
+      <div class="polaroid">
+        <img src="backed.jpg" alt="Ocean" style="width:120px;height:120px;object-fit:cover;border-radius:2px;" />
+        <span>🌊 海洋公园</span>
+      </div>
+    </div>
+    <!-- 老电视机视频 -->
+    <div class="tv-wrapper">
+      <div class="tv-antenna"></div>
+      <div class="tv-screen" id="tvScreen">
+        <iframe id="tvIframe" src="https://player.bilibili.com/player.html?bvid=BV1vFJp6gEsu&autoplay=0&high_quality=1&danmaku=0" allowfullscreen frameborder="0"></iframe>
+        <div class="play-btn-sketch" id="playBtn" onclick="playTV()">
+          <div class="play-btn-inner">▶️</div>
+        </div>
+      </div>
+      <div class="tv-legs"><span></span><span></span></div>
+    </div>
+    <p class="tv-caption">📺 Luca与好奇的小企鹅</p>
   </section>
 
-  <!-- 视频 -->
-  <section class="video-section fade-in">
-    <h2 class="section-title">
-      <span class="title-bar"></span>
-      <span class="title-text">🐧 Luca on the Ocean Park</span>
-    </h2>
-    <div class="video-row">
-      <div class="video-col">
-        <div class="video-wrapper">
-          <iframe src="https://player.bilibili.com/player.html?bvid=BV1vFJp6gEsu&autoplay=0&high_quality=1&danmaku=0" allowfullscreen scrolling="no" frameborder="0"></iframe>
+  <!-- ══ AI 应用卡片 ══ -->
+  <section class="fade-in">
+    <div class="section-head">
+      <span class="doodle-icon">🛠️</span>
+      <h2>我 的 AI 小 助 手</h2>
+    </div>
+    <div class="app-icon-grid">
+      <a class="app-card" href="https://www.doubao.com/share/code/4f920f548a279f42" target="_blank" rel="noopener">
+        <span class="app-icon">📐</span>
+        <div class="app-info">
+          <div class="app-name">方程 3D 可视化</div>
+          <div class="app-desc">🪄 魔法般地把方程变成三维世界！</div>
         </div>
-        <p class="video-caption">Luca与好奇的小企鹅</p>
-      </div>
-      <div class="video-col">
-        <div class="video-wrapper">
-          <iframe src="https://player.bilibili.com/player.html?bvid=BV1SgJp6YEdB&autoplay=0&high_quality=1&danmaku=0" allowfullscreen scrolling="no" frameborder="0"></iframe>
+      </a>
+      <a class="app-card" href="https://www.doubao.com/share/code/1e2e90bb7283591e" target="_blank" rel="noopener">
+        <span class="app-icon">📝</span>
+        <div class="app-info">
+          <div class="app-name">单词听写助手</div>
+          <div class="app-desc">🎧 我的AI小老师，听写单词超厉害！</div>
         </div>
-        <p class="video-caption">海底隧道</p>
-      </div>
-      <div class="video-col">
-        <div class="video-wrapper">
-          <iframe src="https://player.bilibili.com/player.html?bvid=BV1HxJp6pEdr&autoplay=0&high_quality=1&danmaku=0" allowfullscreen scrolling="no" frameborder="0"></iframe>
-        </div>
-        <p class="video-caption">Ocean Park · BBC Style</p>
-      </div>
+      </a>
     </div>
   </section>
 
 </main>
 
 <footer>
-  <div class="holo-divider" style="max-width:260px;margin:0 auto 14px;"></div>
+  <div class="sketch-divider" style="margin-bottom: 14px;"></div>
   🌈 © 2025 Luca · 用 AI 创造无限可能
 </footer>
 
 <script>
 /* ═══════════════════════════════════════════
-   浮动卡通装饰（星星、泡泡、花朵）
+   背景涂鸦
 ═══════════════════════════════════════════ */
 (function () {
-  const field = document.getElementById('particle-field');
-  const EMOJIS = ['⭐', '✨', '🌟', '🫧', '🌸', '💖', '🎈', '☁️', '💫', '🦋', '🍬', '🎀'];
+  const container = document.getElementById('bg-doodles');
+  const DOODLES = ['⭐', '✨', '⚙️', '🌸', '🎨', '✏️', '🌈', '💫', '🌟', '🎵', '✧', '✦', '🍀', '🎈'];
 
-  for (let i = 0; i < 28; i++) {
+  for (let i = 0; i < 22; i++) {
+    const el = document.createElement('span');
+    el.className = 'bg-doodle';
+    el.textContent = DOODLES[i % DOODLES.length];
+    el.style.cssText = `
+      top: ${Math.random() * 95}%;
+      left: ${Math.random() * 95}%;
+      font-size: ${1.2 + Math.random() * 2.2}rem;
+      animation-delay: ${Math.random() * 8}s;
+    `;
+    container.appendChild(el);
+  }
+
+  // SVG 波浪线
+  for (let i = 0; i < 5; i++) {
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('width', '200');
+    svg.setAttribute('height', '30');
+    svg.style.cssText = `position:absolute;top:${10 + i * 18}%;left:${Math.random() * 80}%;opacity:0.08;animation-delay:${i * 1.2}s;`;
+    svg.classList.add('bg-doodle');
+    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path.setAttribute('d', 'M0,15 Q40,2 80,15 T160,15 T200,15');
+    path.setAttribute('fill', 'none');
+    path.setAttribute('stroke', i % 2 === 0 ? '#FF8FAB' : '#89CFF0');
+    path.setAttribute('stroke-width', '3');
+    path.setAttribute('stroke-linecap', 'round');
+    svg.appendChild(path);
+    container.appendChild(svg);
+  }
+})();
+
+/* ═══════════════════════════════════════════
+   浮动涂鸦
+═══════════════════════════════════════════ */
+(function () {
+  const field = document.getElementById('float-doodles');
+  const ITEMS = ['⭐', '🫧', '🌸', '💖', '🎈', '✨', '🦋', '🍬', '💫'];
+
+  for (let i = 0; i < 24; i++) {
     const p = document.createElement('span');
-    p.className = 'particle';
-    p.textContent = EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
+    p.className = 'float-item';
+    p.textContent = ITEMS[Math.floor(Math.random() * ITEMS.length)];
     p.style.cssText = `
       left: ${Math.random() * 100}%;
-      bottom: ${Math.random() * -15}%;
+      bottom: ${Math.random() * -18}%;
       animation-duration: ${10 + Math.random() * 18}s;
       animation-delay: ${Math.random() * 14}s;
-      font-size: ${1.1 + Math.random() * 1.8}rem;
+      font-size: ${1.1 + Math.random() * 2}rem;
     `;
     field.appendChild(p);
   }
 })();
 
 /* ═══════════════════════════════════════════
-   滚动进入动画
+   老电视播放
+═══════════════════════════════════════════ */
+function playTV() {
+  const btn = document.getElementById('playBtn');
+  const iframe = document.getElementById('tvIframe');
+  // 重新加载 iframe 并自动播放
+  const src = iframe.src;
+  iframe.src = src.replace('autoplay=0', 'autoplay=1');
+  btn.classList.add('hidden');
+}
+// 初始 iframe 加载时重置按钮
+document.getElementById('tvIframe').addEventListener('load', function() {
+  const btn = document.getElementById('playBtn');
+  if (btn && !this.src.includes('autoplay=1')) {
+    btn.classList.remove('hidden');
+  }
+});
+
+/* ═══════════════════════════════════════════
+   滚动动画
 ═══════════════════════════════════════════ */
 const observer = new IntersectionObserver(
   entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
-  { threshold: 0.1 }
+  { threshold: 0.08 }
 );
 document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 </script>
