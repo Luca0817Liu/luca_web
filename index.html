@@ -325,11 +325,29 @@
       letter-spacing: 0.03em;
     }
 
+    /* ── 视频横排 ── */
+    .video-row {
+      display: flex;
+      gap: 14px;
+    }
+
+    .video-col {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .video-col .video-caption {
+      margin-top: 8px;
+      font-size: 0.82rem;
+      color: rgba(232,234,240,0.6);
+      text-align: center;
+      letter-spacing: 0.04em;
+    }
+
     /* ── 视频区 ── */
     .video-section .video-wrapper {
       position: relative;
       width: 100%;
-      max-width: 380px;
       aspect-ratio: 9/16;
       border-radius: var(--radius);
       overflow: hidden;
@@ -412,6 +430,7 @@
       main { padding: 40px 16px 60px; }
       .card-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
       #globe-canvas { display: none; }
+      .video-row { flex-direction: column; }
     }
 
     @media (max-width: 400px) {
@@ -511,34 +530,27 @@
   <section class="video-section fade-in">
     <h2 class="section-title">
       <span class="title-bar"></span>
-      <span class="title-text">Little_Luca</span>
+      <span class="title-text">Luca on the Ocean Park</span>
     </h2>
-    <div class="video-wrapper">
-      <video
-        src="luca.mp4"
-        controls
-        playsinline
-        style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;"
-      ></video>
-    </div>
-    <div class="video-meta">
-      <p>记录和儿子一起完成的 101 件有趣又疯狂的挑战，每一件都充满欢笑与回忆。</p>
-    </div>
-  </section>
-
-  <!-- 海底隧道 -->
-  <section class="video-section fade-in">
-    <h2 class="section-title">
-      <span class="title-bar"></span>
-      <span class="title-text">海底隧道</span>
-    </h2>
-    <div class="video-wrapper">
-      <video
-        src="VID_20260607_143006.mp4"
-        controls
-        playsinline
-        style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;"
-      ></video>
+    <div class="video-row">
+      <div class="video-col">
+        <div class="video-wrapper">
+          <video src="luca.mp4" controls playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;"></video>
+        </div>
+        <p class="video-caption">Little_Luca</p>
+      </div>
+      <div class="video-col">
+        <div class="video-wrapper">
+          <video src="VID_20260607_143006.mp4" controls playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;"></video>
+        </div>
+        <p class="video-caption">海底隧道</p>
+      </div>
+      <div class="video-col">
+        <div class="video-wrapper">
+          <video src="park_bbc.mp4" controls playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;"></video>
+        </div>
+        <p class="video-caption">Ocean Park · BBC Style</p>
+      </div>
     </div>
   </section>
 
