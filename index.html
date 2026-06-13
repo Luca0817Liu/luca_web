@@ -8,72 +8,59 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --cyan:    #00f5ff;
-      --purple:  #a855f7;
-      --blue:    #3b82f6;
-      --magenta: #ff00ff;
-      --gold:    #ffd700;
-      --white:   #e8eaf0;
-      --card-bg: rgba(10, 8, 30, 0.55);
-      --card-border: rgba(168, 85, 247, 0.25);
-      --radius: 16px;
+      --pink:      #FF9CAB;
+      --sky:       #7EC8E3;
+      --sun:       #FFD966;
+      --mint:      #8DD1B9;
+      --lavender:  #C3AED6;
+      --cream:     #FFF8F0;
+      --warm-white:#FFFDF7;
+      --text-dark: #4A3728;
+      --text-mid:  #8B7355;
+      --card-bg:   rgba(255, 255, 255, 0.72);
+      --card-border: rgba(255, 156, 171, 0.45);
+      --radius: 20px;
     }
 
     html, body {
       min-height: 100vh;
-      color: var(--white);
+      color: var(--text-dark);
       font-family: 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
       overflow-x: hidden;
+      background: var(--cream);
     }
 
-    /* ── 最底层：原始背景图（虚化+暗化，减弱存在感） ── */
+    /* ── 第一层：原始背景图（轻虚化+明亮） ── */
     #bg-photo {
       position: fixed;
       inset: 0;
       z-index: 0;
       background: url('backed.jpg') center center / cover no-repeat;
-      filter: blur(14px) brightness(0.25) saturate(0.5);
-      transform: scale(1.06); /* 防止模糊边缘露白 */
+      filter: blur(6px) brightness(0.85) saturate(1.1);
+      transform: scale(1.04);
     }
 
-    /* ── 第二层：霓虹蓝紫渐变叠加 ── */
+    /* ── 第二层：柔和暖色调渐变 ── */
     #bg-gradient {
       position: fixed;
       inset: 0;
       z-index: 1;
       background:
-        radial-gradient(ellipse 90% 70% at 20% 10%, rgba(59,130,246,0.45) 0%, transparent 60%),
-        radial-gradient(ellipse 70% 60% at 80% 90%, rgba(168,85,247,0.50) 0%, transparent 55%),
-        radial-gradient(ellipse 60% 80% at 50% 50%, rgba(0,10,40,0.85) 0%, transparent 100%),
-        linear-gradient(135deg, #050012 0%, #0a0230 40%, #0d0040 70%, #060018 100%);
+        radial-gradient(ellipse 70% 50% at 15% 20%, rgba(255, 156, 171, 0.35) 0%, transparent 55%),
+        radial-gradient(ellipse 60% 60% at 85% 75%, rgba(142, 209, 185, 0.35) 0%, transparent 50%),
+        radial-gradient(ellipse 50% 60% at 50% 40%, rgba(255, 248, 240, 0.75) 0%, transparent 100%),
+        radial-gradient(ellipse 40% 50% at 70% 15%, rgba(126, 200, 227, 0.3) 0%, transparent 55%),
+        linear-gradient(160deg, #FFFDF7 0%, #FFF0F3 30%, #F0F7FF 60%, #FFF8F0 100%);
       pointer-events: none;
     }
 
-    /* ── 第三层：扫描线纹理 ── */
-    #scanlines {
+    /* ── 第三层：卡通波点纹理 ── */
+    #dots-pattern {
       position: fixed;
       inset: 0;
       z-index: 2;
-      background: repeating-linear-gradient(
-        0deg,
-        transparent,
-        transparent 2px,
-        rgba(0,0,0,0.08) 2px,
-        rgba(0,0,0,0.08) 4px
-      );
-      pointer-events: none;
-    }
-
-    /* ── Three.js 地球画布 ── */
-    #globe-canvas {
-      position: fixed;
-      right: -80px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 600px;
-      height: 600px;
-      z-index: 3;
-      opacity: 0.55;
+      background-image: radial-gradient(circle, rgba(255,156,171,0.15) 1px, transparent 1px);
+      background-size: 32px 32px;
       pointer-events: none;
     }
 
@@ -109,20 +96,20 @@
       position: absolute;
       inset: -8px;
       border-radius: 50%;
-      border: 2px solid transparent;
-      background: linear-gradient(135deg, var(--cyan), var(--purple), var(--magenta)) border-box;
+      border: 3px solid transparent;
+      background: linear-gradient(135deg, var(--pink), var(--sky), var(--sun), var(--mint)) border-box;
       -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
       -webkit-mask-composite: destination-out;
       mask-composite: exclude;
-      animation: ring-spin 4s linear infinite;
+      animation: ring-spin 5s linear infinite;
     }
 
     .avatar-wrap::after {
       inset: -14px;
-      border: 1px solid transparent;
-      background: linear-gradient(225deg, var(--purple), transparent, var(--cyan)) border-box;
-      animation: ring-spin 7s linear infinite reverse;
-      opacity: 0.5;
+      border: 2px dashed transparent;
+      background: linear-gradient(225deg, var(--sun), transparent, var(--pink)) border-box;
+      animation: ring-spin 8s linear infinite reverse;
+      opacity: 0.7;
     }
 
     @keyframes ring-spin {
@@ -135,105 +122,83 @@
       height: 100%;
       border-radius: 50%;
       object-fit: cover;
-      border: 2px solid rgba(0,245,255,0.6);
+      border: 3px solid rgba(255,156,171,0.5);
       box-shadow:
-        0 0 20px rgba(0,245,255,0.4),
-        0 0 60px rgba(168,85,247,0.3),
-        inset 0 0 20px rgba(0,245,255,0.05);
+        0 0 20px rgba(255,156,171,0.35),
+        0 0 50px rgba(126,200,227,0.25),
+        0 4px 15px rgba(0,0,0,0.08);
     }
 
-    /* 全息标题 */
+    /* 标题 */
     .neon-title {
       font-size: clamp(1.8rem, 6vw, 3rem);
       font-weight: 900;
-      letter-spacing: 0.05em;
-      background: linear-gradient(90deg, var(--cyan) 0%, var(--blue) 25%, var(--purple) 50%, var(--magenta) 75%, var(--cyan) 100%);
-      background-size: 300% 100%;
+      letter-spacing: 0.04em;
+      background: linear-gradient(90deg, var(--pink) 0%, #F9A8D4 20%, var(--sky) 45%, var(--mint) 70%, var(--sun) 100%);
+      background-size: 200% 100%;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      animation: gradient-flow 5s linear infinite, glitch 10s step-end infinite;
-      filter: drop-shadow(0 0 12px rgba(0,245,255,0.7));
+      animation: candy-flow 4s ease-in-out infinite, title-bounce 2s ease-in-out infinite;
+      filter: drop-shadow(0 2px 4px rgba(255,156,171,0.3));
     }
 
-    @keyframes gradient-flow {
-      0%   { background-position: 0% 50%; }
-      100% { background-position: 300% 50%; }
+    @keyframes candy-flow {
+      0%, 100% { background-position: 0% 50%; }
+      50%      { background-position: 100% 50%; }
     }
 
-    @keyframes glitch {
-      0%, 94%, 100% { transform: translate(0); filter: drop-shadow(0 0 12px rgba(0,245,255,0.7)); }
-      95%  { transform: translate(-3px,1px);  filter: drop-shadow(-3px 0 0 var(--magenta)) drop-shadow(3px 0 0 var(--cyan)); }
-      96%  { transform: translate(3px,-1px);  filter: drop-shadow(3px 0 0 var(--purple)) drop-shadow(-3px 0 0 var(--cyan)); }
-      97%  { transform: translate(-2px,2px);  filter: drop-shadow(0 0 12px rgba(168,85,247,0.8)); }
-      98%  { transform: translate(2px,-2px);  filter: drop-shadow(3px 0 0 var(--gold)) drop-shadow(-3px 0 0 var(--cyan)); }
-      99%  { transform: translate(0);         filter: drop-shadow(0 0 12px rgba(0,245,255,0.7)); }
+    @keyframes title-bounce {
+      0%, 100% { transform: translateY(0); }
+      50%      { transform: translateY(-3px); }
     }
 
     .subtitle {
       font-size: clamp(0.95rem, 2.5vw, 1.15rem);
-      color: rgba(232,234,240,0.65);
-      letter-spacing: 0.08em;
+      color: var(--text-mid);
+      letter-spacing: 0.06em;
     }
 
     .contact {
       font-size: 0.9rem;
-      color: var(--cyan);
-      opacity: 0.75;
+      color: var(--pink);
+      opacity: 0.85;
       letter-spacing: 0.04em;
     }
 
-    /* 全息分隔线 */
+    /* 彩虹分隔线 */
     .holo-divider {
       width: 100%;
       max-width: 400px;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--cyan), var(--purple), var(--magenta), transparent);
-      opacity: 0.5;
-      position: relative;
-    }
-
-    .holo-divider::after {
-      content: '';
-      position: absolute;
-      top: -1px;
-      left: 30%;
-      width: 40%;
       height: 3px;
-      background: linear-gradient(90deg, transparent, var(--cyan), transparent);
-      filter: blur(4px);
-      animation: scan 3s ease-in-out infinite;
-    }
-
-    @keyframes scan {
-      0%, 100% { opacity: 0.3; transform: translateX(-60%); }
-      50%       { opacity: 1;   transform: translateX(60%); }
+      background: linear-gradient(90deg, transparent, var(--pink), var(--sun), var(--mint), var(--sky), var(--lavender), transparent);
+      border-radius: 2px;
+      opacity: 0.7;
     }
 
     /* ── Section 标题 ── */
     .section-title {
       font-size: clamp(1.0rem, 2.8vw, 1.35rem);
       font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
+      letter-spacing: 0.08em;
       margin-bottom: 24px;
       display: flex;
       align-items: center;
       gap: 12px;
-      color: var(--white);
+      color: var(--text-dark);
     }
 
     .section-title .title-bar {
-      width: 4px;
+      width: 5px;
       height: 1.3em;
-      background: linear-gradient(180deg, var(--cyan), var(--purple));
-      border-radius: 2px;
+      background: linear-gradient(180deg, var(--pink), var(--sun), var(--mint));
+      border-radius: 3px;
       flex-shrink: 0;
-      box-shadow: 0 0 8px var(--cyan);
+      box-shadow: 0 0 8px rgba(255,156,171,0.4);
     }
 
     .section-title .title-text {
-      background: linear-gradient(90deg, var(--white), rgba(168,85,247,0.8));
+      background: linear-gradient(90deg, var(--text-dark), var(--pink));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -250,77 +215,80 @@
 
     .card {
       background: var(--card-bg);
-      border: 1px solid var(--card-border);
+      border: 2px dashed var(--card-border);
       border-radius: var(--radius);
       padding: 22px 18px;
       text-decoration: none;
-      color: inherit;
+      color: var(--text-dark);
       display: flex;
       flex-direction: column;
       gap: 10px;
       position: relative;
       overflow: hidden;
-      transition: transform 0.3s cubic-bezier(.22,.68,0,1.2),
+      transition: transform 0.35s cubic-bezier(.34,1.56,.64,1),
                   box-shadow 0.3s ease,
                   border-color 0.3s ease;
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
     }
 
-    /* 全息扫描线 */
+    /* 卡通圆角色块装饰 */
     .card::before {
       content: '';
       position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg,
-        rgba(0,245,255,0.04) 0%,
-        transparent 50%,
-        rgba(168,85,247,0.04) 100%);
+      top: -20px;
+      right: -20px;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: rgba(255,156,171,0.12);
       pointer-events: none;
+      transition: transform 0.4s cubic-bezier(.34,1.56,.64,1);
     }
 
-    /* 顶部发光条 */
     .card::after {
       content: '';
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--cyan), var(--purple), transparent);
-      opacity: 0.6;
-      transition: opacity 0.3s;
+      bottom: -15px;
+      left: -15px;
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      background: rgba(126,200,227,0.12);
+      pointer-events: none;
+      transition: transform 0.4s cubic-bezier(.34,1.56,.64,1);
     }
 
     .card:hover {
-      transform: translateY(-7px) scale(1.02);
+      transform: translateY(-8px) scale(1.03);
       box-shadow:
-        0 10px 40px rgba(168,85,247,0.3),
-        0 0 0 1px rgba(0,245,255,0.5),
-        0 0 30px rgba(0,245,255,0.1) inset;
-      border-color: rgba(0,245,255,0.5);
+        0 8px 30px rgba(255,156,171,0.25),
+        0 0 0 2px rgba(255,217,102,0.5),
+        0 4px 12px rgba(0,0,0,0.06);
+      border-color: rgba(255,217,102,0.7);
     }
 
-    .card:hover::after { opacity: 1; }
+    .card:hover::before { transform: scale(1.4) translate(-5px, 5px); }
+    .card:hover::after  { transform: scale(1.4) translate(5px, -5px); }
 
     .card-icon { font-size: 2rem; line-height: 1; }
 
     .card-title {
       font-size: 1rem;
       font-weight: 700;
-      color: var(--white);
+      color: var(--text-dark);
     }
 
     .card-desc {
       font-size: 0.82rem;
-      color: rgba(232,234,240,0.5);
+      color: var(--text-mid);
       line-height: 1.55;
     }
 
     .card-link-hint {
       font-size: 0.75rem;
-      color: var(--cyan);
-      opacity: 0.55;
+      color: var(--pink);
+      opacity: 0.8;
       margin-top: auto;
       letter-spacing: 0.03em;
     }
@@ -339,7 +307,7 @@
     .video-col .video-caption {
       margin-top: 8px;
       font-size: 0.82rem;
-      color: rgba(232,234,240,0.6);
+      color: var(--text-mid);
       text-align: center;
       letter-spacing: 0.04em;
     }
@@ -351,8 +319,8 @@
       aspect-ratio: 9/16;
       border-radius: var(--radius);
       overflow: hidden;
-      border: 1px solid var(--card-border);
-      box-shadow: 0 0 40px rgba(168,85,247,0.25), 0 0 80px rgba(0,245,255,0.1);
+      border: 2px solid rgba(255,156,171,0.4);
+      box-shadow: 0 4px 25px rgba(255,156,171,0.2), 0 2px 50px rgba(126,200,227,0.15);
       backdrop-filter: blur(8px);
     }
 
@@ -364,17 +332,6 @@
       border: 0;
     }
 
-    .video-section .video-meta {
-      max-width: 380px;
-      margin-top: 14px;
-    }
-
-    .video-section .video-meta p {
-      font-size: 0.88rem;
-      color: rgba(232,234,240,0.6);
-      line-height: 1.65;
-    }
-
     /* ── 页脚 ── */
     footer {
       position: relative;
@@ -382,11 +339,11 @@
       text-align: center;
       padding: 24px 20px 36px;
       font-size: 0.8rem;
-      color: rgba(232,234,240,0.28);
+      color: var(--text-mid);
       letter-spacing: 0.04em;
     }
 
-    /* ── 浮动粒子装饰 ── */
+    /* ── 浮动卡通装饰 ── */
     .particle-field {
       position: fixed;
       inset: 0;
@@ -397,16 +354,16 @@
 
     .particle {
       position: absolute;
-      border-radius: 50%;
       animation: float-up linear infinite;
       opacity: 0;
+      font-size: 1.4rem;
     }
 
     @keyframes float-up {
-      0%   { opacity: 0;   transform: translateY(0) scale(0.5); }
-      10%  { opacity: 0.6; }
-      90%  { opacity: 0.3; }
-      100% { opacity: 0;   transform: translateY(-100vh) scale(1.2); }
+      0%   { opacity: 0;   transform: translateY(0) scale(0.6) rotate(0deg); }
+      10%  { opacity: 0.8; }
+      85%  { opacity: 0.5; }
+      100% { opacity: 0;   transform: translateY(-100vh) scale(1.1) rotate(20deg); }
     }
 
     /* ── 滚动进入动画 ── */
@@ -423,13 +380,11 @@
 
     /* ── 响应式 ── */
     @media (max-width: 768px) {
-      #globe-canvas { right: -140px; width: 400px; height: 400px; opacity: 0.35; }
     }
 
     @media (max-width: 600px) {
       main { padding: 40px 16px 60px; }
       .card-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
-      #globe-canvas { display: none; }
       .video-row { flex-direction: column; }
     }
 
@@ -443,12 +398,9 @@
 <!-- 背景层 -->
 <div id="bg-photo"></div>
 <div id="bg-gradient"></div>
-<div id="scanlines"></div>
+<div id="dots-pattern"></div>
 
-<!-- 3D 全息地球 -->
-<canvas id="globe-canvas"></canvas>
-
-<!-- 浮动粒子 -->
+<!-- 浮动卡通装饰 -->
 <div class="particle-field" id="particle-field"></div>
 
 <main>
@@ -459,7 +411,7 @@
       <img src="pic.png" alt="Luca" />
     </div>
     <h1 class="neon-title">Luca 的 AI 作品集</h1>
-    <p class="subtitle">欢迎和我一起玩 AI ~~</p>
+    <p class="subtitle">✨ 欢迎和我一起玩 AI ~~ ✨</p>
     <div class="holo-divider"></div>
     <p class="contact">📮 lrj0316@163.com</p>
   </div>
@@ -468,7 +420,7 @@
   <section class="fade-in">
     <h2 class="section-title">
       <span class="title-bar"></span>
-      <span class="title-text">我的 AI 游戏</span>
+      <span class="title-text">🎮 我的 AI 游戏</span>
     </h2>
     <div class="card-grid">
       <a class="card" href="https://fire.ailuca.tech/" target="_blank" rel="noopener">
@@ -508,7 +460,7 @@
   <section class="fade-in">
     <h2 class="section-title">
       <span class="title-bar"></span>
-      <span class="title-text">我的 AI 应用</span>
+      <span class="title-text">🛠️ 我的 AI 应用</span>
     </h2>
     <div class="card-grid">
       <a class="card" href="https://www.doubao.com/share/code/4f920f548a279f42" target="_blank" rel="noopener">
@@ -530,7 +482,7 @@
   <section class="video-section fade-in">
     <h2 class="section-title">
       <span class="title-bar"></span>
-      <span class="title-text">Luca on the Ocean Park</span>
+      <span class="title-text">🐧 Luca on the Ocean Park</span>
     </h2>
     <div class="video-row">
       <div class="video-col">
@@ -558,158 +510,27 @@
 
 <footer>
   <div class="holo-divider" style="max-width:260px;margin:0 auto 14px;"></div>
-  © 2025 Luca · 用 AI 创造无限可能
+  🌈 © 2025 Luca · 用 AI 创造无限可能
 </footer>
 
-<!-- Three.js CDN -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 /* ═══════════════════════════════════════════
-   3D 全息地球
-═══════════════════════════════════════════ */
-(function () {
-  const canvas = document.getElementById('globe-canvas');
-  const W = canvas.clientWidth  || 600;
-  const H = canvas.clientHeight || 600;
-  canvas.width  = W;
-  canvas.height = H;
-
-  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-  renderer.setSize(W, H);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(45, W / H, 0.1, 100);
-  camera.position.z = 2.8;
-
-  /* 地球本体 */
-  const geo = new THREE.SphereGeometry(1, 64, 64);
-
-  /* 自定义全息着色：使用 wireframe 网格球 + 实体球叠加 */
-  const matSolid = new THREE.MeshPhongMaterial({
-    color: 0x050830,
-    emissive: 0x0a1560,
-    transparent: true,
-    opacity: 0.85,
-    shininess: 60,
-  });
-  const sphere = new THREE.Mesh(geo, matSolid);
-  scene.add(sphere);
-
-  /* 网格线层 */
-  const matWire = new THREE.MeshBasicMaterial({
-    color: 0x00d4ff,
-    wireframe: true,
-    transparent: true,
-    opacity: 0.18,
-  });
-  const wireGeo = new THREE.SphereGeometry(1.001, 36, 18);
-  const wireSphere = new THREE.Mesh(wireGeo, matWire);
-  scene.add(wireSphere);
-
-  /* 发光大气层 */
-  const atmosGeo = new THREE.SphereGeometry(1.08, 64, 64);
-  const atmosMat = new THREE.MeshBasicMaterial({
-    color: 0x7c3aed,
-    transparent: true,
-    opacity: 0.12,
-    side: THREE.BackSide,
-  });
-  const atmos = new THREE.Mesh(atmosGeo, atmosMat);
-  scene.add(atmos);
-
-  /* 外层大气光晕 */
-  const haloGeo = new THREE.SphereGeometry(1.18, 64, 64);
-  const haloMat = new THREE.MeshBasicMaterial({
-    color: 0x00f5ff,
-    transparent: true,
-    opacity: 0.05,
-    side: THREE.BackSide,
-  });
-  scene.add(new THREE.Mesh(haloGeo, haloMat));
-
-  /* 点状陆地（随机散布发光点） */
-  const ptCount = 2400;
-  const ptGeo = new THREE.BufferGeometry();
-  const positions = new Float32Array(ptCount * 3);
-  const colors    = new Float32Array(ptCount * 3);
-  for (let i = 0; i < ptCount; i++) {
-    const theta = Math.random() * Math.PI * 2;
-    const phi   = Math.acos(2 * Math.random() - 1);
-    const r = 1.005;
-    positions[i * 3]     = r * Math.sin(phi) * Math.cos(theta);
-    positions[i * 3 + 1] = r * Math.cos(phi);
-    positions[i * 3 + 2] = r * Math.sin(phi) * Math.sin(theta);
-    /* 随机蓝紫色 */
-    const t = Math.random();
-    colors[i * 3]     = 0.0 + t * 0.6;   // R
-    colors[i * 3 + 1] = 0.8 - t * 0.4;   // G
-    colors[i * 3 + 2] = 1.0;              // B
-  }
-  ptGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-  ptGeo.setAttribute('color',    new THREE.BufferAttribute(colors, 3));
-  const ptMat = new THREE.PointsMaterial({
-    size: 0.022,
-    vertexColors: true,
-    transparent: true,
-    opacity: 0.75,
-  });
-  scene.add(new THREE.Points(ptGeo, ptMat));
-
-  /* 轨道环 */
-  function addRing(radius, color, tilt) {
-    const rGeo = new THREE.TorusGeometry(radius, 0.003, 8, 120);
-    const rMat = new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.35 });
-    const ring = new THREE.Mesh(rGeo, rMat);
-    ring.rotation.x = tilt;
-    scene.add(ring);
-  }
-  addRing(1.35, 0x00f5ff,  Math.PI / 2.5);
-  addRing(1.55, 0xa855f7,  Math.PI / 3.2);
-  addRing(1.75, 0x3b82f6, -Math.PI / 4.0);
-
-  /* 灯光 */
-  scene.add(new THREE.AmbientLight(0x1a1040, 1.5));
-  const dirLight = new THREE.DirectionalLight(0x6699ff, 2.5);
-  dirLight.position.set(3, 2, 2);
-  scene.add(dirLight);
-  const rimLight = new THREE.DirectionalLight(0xff00ff, 0.6);
-  rimLight.position.set(-3, -1, -2);
-  scene.add(rimLight);
-
-  /* 动画 */
-  let frame = 0;
-  function animate() {
-    requestAnimationFrame(animate);
-    frame++;
-    sphere.rotation.y    += 0.0025;
-    wireSphere.rotation.y = sphere.rotation.y;
-    atmos.rotation.y     += 0.001;
-    renderer.render(scene, camera);
-  }
-  animate();
-})();
-
-/* ═══════════════════════════════════════════
-   浮动粒子
+   浮动卡通装饰（星星、泡泡、花朵）
 ═══════════════════════════════════════════ */
 (function () {
   const field = document.getElementById('particle-field');
-  const COLORS = ['#00f5ff', '#a855f7', '#3b82f6', '#ff00ff', '#7c3aed'];
+  const EMOJIS = ['⭐', '✨', '🌟', '🫧', '🌸', '💖', '🎈', '☁️', '💫', '🦋', '🍬', '🎀'];
 
-  for (let i = 0; i < 35; i++) {
-    const p = document.createElement('div');
+  for (let i = 0; i < 28; i++) {
+    const p = document.createElement('span');
     p.className = 'particle';
-    const size = 2 + Math.random() * 4;
+    p.textContent = EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
     p.style.cssText = `
-      width: ${size}px;
-      height: ${size}px;
       left: ${Math.random() * 100}%;
-      bottom: ${Math.random() * -20}%;
-      background: ${COLORS[Math.floor(Math.random() * COLORS.length)]};
-      box-shadow: 0 0 ${size * 3}px ${COLORS[Math.floor(Math.random() * COLORS.length)]};
-      animation-duration: ${8 + Math.random() * 16}s;
-      animation-delay: ${Math.random() * 12}s;
+      bottom: ${Math.random() * -15}%;
+      animation-duration: ${10 + Math.random() * 18}s;
+      animation-delay: ${Math.random() * 14}s;
+      font-size: ${1.1 + Math.random() * 1.8}rem;
     `;
     field.appendChild(p);
   }
