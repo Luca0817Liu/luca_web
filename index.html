@@ -57,13 +57,24 @@
       66%      { transform: translateY(8px) rotate(-2deg); }
     }
 
-    /* ── 主内容 ── */
+    /* ── 页面两栏布局 ── */
+    .page-layout {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* ── 主内容（左栏） ── */
     main {
       position: relative;
       z-index: 10;
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 50px 20px 80px;
+      flex: 1 1 auto;
+      max-width: 880px;
+      min-width: 0;
+      padding: 50px 0 80px;
     }
 
     /* ═══════ Hero Section ═══════ */
@@ -657,7 +668,247 @@
       transform: translateY(0);
     }
 
-    /* ═══════ 响应式 ═══════ */
+    /* ═══════ GitHub Trending 右侧面板 ═══════ */
+    #trending-panel {
+      position: sticky;
+      top: 20px;
+      z-index: 10;
+      flex: 0 0 340px;
+      max-width: 340px;
+      align-self: flex-start;
+      max-height: calc(100vh - 40px);
+      display: flex;
+      flex-direction: column;
+      background: var(--card-bg);
+      border: 3px dashed var(--sky);
+      border-radius: var(--radius-lg);
+      box-shadow: 3px 4px 0px rgba(0,0,0,0.06), 0 2px 12px rgba(0,0,0,0.04);
+      overflow: hidden;
+    }
+
+    /* 面板头部 */
+    .trending-header {
+      flex-shrink: 0;
+      padding: 16px 18px 12px;
+      border-bottom: 2px dotted var(--coral);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .trending-header .trending-icon {
+      font-size: 1.6rem;
+      animation: trending-icon-spin 8s linear infinite;
+    }
+    @keyframes trending-icon-spin {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+    .trending-header h2 {
+      font-family: 'ZCOOL KuaiLe', cursive;
+      font-size: 1rem;
+      color: var(--text-main);
+      letter-spacing: 0.05em;
+      flex: 1;
+    }
+    .trending-header .trending-badge {
+      font-size: 0.62rem;
+      background: var(--sun);
+      color: var(--text-main);
+      padding: 2px 8px;
+      border-radius: 10px;
+      border: 1.5px dotted var(--pink);
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .trending-date {
+      flex-shrink: 0;
+      padding: 4px 18px 8px;
+      font-size: 0.7rem;
+      color: var(--text-light);
+      text-align: right;
+      border-bottom: 1px dashed rgba(0,0,0,0.05);
+    }
+
+    /* 面板滚动列表 */
+    .trending-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px 12px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    /* 自定义滚动条 */
+    .trending-list::-webkit-scrollbar { width: 5px; }
+    .trending-list::-webkit-scrollbar-track { background: transparent; }
+    .trending-list::-webkit-scrollbar-thumb { background: var(--coral); border-radius: 3px; opacity: 0.5; }
+
+    /* 项目卡片 */
+    .trending-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 12px;
+      background: rgba(255,255,255,0.6);
+      border: 1.5px solid transparent;
+      border-radius: 14px;
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.25s ease;
+      position: relative;
+    }
+    .trending-item:hover {
+      background: rgba(255,255,255,0.95);
+      border-color: var(--pink);
+      transform: translateX(-3px);
+      box-shadow: 2px 3px 0px rgba(255,143,171,0.15), 0 4px 12px rgba(0,0,0,0.06);
+    }
+    .trending-rank {
+      flex-shrink: 0;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--paper-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-light);
+      margin-top: 1px;
+    }
+    .trending-item.top3 .trending-rank {
+      background: var(--sun);
+      color: var(--text-main);
+      box-shadow: 0 0 8px rgba(255,224,102,0.5);
+    }
+    .trending-info {
+      flex: 1;
+      min-width: 0;
+    }
+    .trending-name {
+      font-family: 'ZCOOL KuaiLe', cursive;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text-main);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 2px;
+    }
+    .trending-name .owner {
+      color: var(--text-light);
+      font-weight: 400;
+    }
+    .trending-desc {
+      font-size: 0.68rem;
+      color: var(--text-light);
+      line-height: 1.4;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      margin-bottom: 4px;
+    }
+    .trending-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .trending-lang {
+      font-size: 0.62rem;
+      color: var(--text-light);
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+    .trending-lang-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .trending-stars {
+      font-size: 0.62rem;
+      color: var(--text-light);
+      display: flex;
+      align-items: center;
+      gap: 2px;
+    }
+    .trending-today {
+      flex-shrink: 0;
+      background: linear-gradient(135deg, #FFF9F0, #FFE066);
+      border: 1.5px solid #FFE066;
+      border-radius: 12px;
+      padding: 2px 8px;
+      text-align: center;
+      margin-top: 1px;
+    }
+    .trending-today .num {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #E65100;
+      display: block;
+      line-height: 1.1;
+    }
+    .trending-today .lbl {
+      font-size: 0.5rem;
+      color: var(--text-light);
+    }
+
+    /* 面板底部 */
+    .trending-footer {
+      flex-shrink: 0;
+      padding: 6px 18px 10px;
+      text-align: center;
+      font-size: 0.6rem;
+      color: var(--text-light);
+      border-top: 1.5px dotted var(--coral);
+    }
+    .trending-footer a {
+      color: var(--sky);
+      text-decoration: none;
+    }
+    .trending-footer a:hover { text-decoration: underline; }
+
+    /* 加载状态 */
+    .trending-loading {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 30px;
+      color: var(--text-light);
+      font-size: 0.8rem;
+    }
+    .trending-loading .spinner {
+      width: 32px;
+      height: 32px;
+      border: 3px solid var(--paper-dark);
+      border-top-color: var(--pink);
+      border-radius: 50%;
+      animation: trending-icon-spin 0.8s linear infinite;
+    }
+    .trending-error {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 30px;
+      color: var(--text-light);
+      font-size: 0.75rem;
+      text-align: center;
+    }
+
+    /* ── 响应式 ── */
+    @media (max-width: 1100px) {
+      #trending-panel { display: none; }
+    }
     @media (max-width: 600px) {
       main { padding: 32px 14px 50px; }
       .masonry-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
@@ -677,6 +928,8 @@
 
 <!-- 浮动小涂鸦 -->
 <div class="float-doodles" id="float-doodles"></div>
+
+<div class="page-layout">
 
 <main>
 
@@ -854,6 +1107,27 @@
 
 </main>
 
+<!-- ═══════ GitHub Trending 右侧面板 ═══════ -->
+<aside id="trending-panel">
+  <div class="trending-header">
+    <span class="trending-icon">🐙</span>
+    <h2>GitHub 热榜</h2>
+    <span class="trending-badge">Daily</span>
+  </div>
+  <div class="trending-date" id="trendingDate"></div>
+  <div class="trending-list" id="trendingList">
+    <div class="trending-loading">
+      <div class="spinner"></div>
+      <span>加载中...</span>
+    </div>
+  </div>
+  <div class="trending-footer">
+    🌟 数据来源 <a href="https://github.com/trending" target="_blank" rel="noopener">GitHub Trending</a> · 每日更新
+  </div>
+</aside>
+
+</div><!-- .page-layout -->
+
 <footer>
   <div class="sketch-divider" style="margin-bottom: 14px;"></div>
   🌈 © 2025 Luca · 用 AI 创造无限可能
@@ -1009,6 +1283,171 @@ const observer = new IntersectionObserver(
   { threshold: 0.08 }
 );
 document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+/* ═══════════════════════════════════════════
+   GitHub Trending 动态获取
+   - GitHub Search API，按本周新创项目 + star 排序
+   - localStorage 缓存，24h 刷新
+═══════════════════════════════════════════ */
+(function () {
+  const CACHE_KEY = 'gh_trending_cache';
+  const CACHE_TTL = 24 * 60 * 60 * 1000; // 24 小时
+
+  const listEl = document.getElementById('trendingList');
+  const dateEl = document.getElementById('trendingDate');
+
+  /* 语言颜色映射 */
+  const langColors = {
+    Python: '#3572A5', TypeScript: '#2b7489', Rust: '#dea584',
+    JavaScript: '#f1e05a', Go: '#00ADD8', Java: '#b07219',
+    'C++': '#f34b7d', 'C#': '#178600', Ruby: '#701516',
+    Swift: '#F05138', Kotlin: '#A97BFF', Dart: '#00B4AB',
+    HTML: '#e34c26', CSS: '#563d7c', Shell: '#89e051',
+    'Jupyter Notebook': '#DA5B0B', Vue: '#41b883', PHP: '#4F5D95',
+    Markdown: '#083fa1', C: '#555555', Lua: '#000080',
+    Scala: '#c22d40', R: '#198CE7', Elixir: '#6e4a7e',
+    Zig: '#ec915c', MDX: '#1b1f24',
+  };
+
+  function formatNum(n) {
+    if (n >= 1000) return (n / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
+    return String(n);
+  }
+
+  function formatDate(dateStr) {
+    var d = new Date(dateStr);
+    return d.getFullYear() + '年' + (d.getMonth() + 1) + '月' + d.getDate() + '日';
+  }
+
+  /* 构建一条 trending 卡片 */
+  function buildItem(repo, rank) {
+    var isTop3 = rank <= 3;
+    var lang = repo.language || '—';
+    var langColor = langColors[lang] || '#8b949e';
+    var a = document.createElement('a');
+    a.className = 'trending-item' + (isTop3 ? ' top3' : '');
+    a.href = repo.html_url;
+    a.target = '_blank';
+    a.rel = 'noopener';
+    a.title = repo.full_name + '\n' + (repo.description || '');
+    a.innerHTML =
+      '<div class="trending-rank">' + rank + '</div>' +
+      '<div class="trending-info">' +
+        '<div class="trending-name"><span class="owner">' + esc(repo.owner.login) + ' /</span> ' + esc(repo.name) + '</div>' +
+        '<div class="trending-desc">' + esc(repo.description || '(无描述)') + '</div>' +
+        '<div class="trending-meta">' +
+          (lang !== '—' ? '<span class="trending-lang"><span class="trending-lang-dot" style="background:' + langColor + '"></span>' + esc(lang) + '</span>' : '') +
+          '<span class="trending-stars">⭐ ' + formatNum(repo.stargazers_count) + '</span>' +
+        '</div>' +
+      '</div>' +
+      '<div class="trending-today">' +
+        '<span class="num">+' + formatNum(repo.stargazers_count) + '</span>' +
+        '<span class="lbl">total</span>' +
+      '</div>';
+    return a;
+  }
+
+  function esc(s) {
+    var div = document.createElement('div');
+    div.textContent = s;
+    return div.innerHTML;
+  }
+
+  /* 显示错误 */
+  function showError(msg) {
+    listEl.innerHTML =
+      '<div class="trending-error">' +
+        '<span style="font-size:2rem">🐙</span>' +
+        '<span>' + esc(msg) + '</span>' +
+        '<span style="font-size:0.65rem">刷新页面重试，或访问 <a href="https://github.com/trending" target="_blank" rel="noopener" style="color:var(--sky)">GitHub Trending</a></span>' +
+      '</div>';
+  }
+
+  /* 渲染列表 */
+  function render(repos, cachedAt) {
+    listEl.innerHTML = '';
+    if (!repos || !repos.length) {
+      showError('暂无数据');
+      return;
+    }
+    repos.forEach(function (r, i) {
+      listEl.appendChild(buildItem(r, i + 1));
+    });
+    if (cachedAt) {
+      dateEl.textContent = '📅 ' + formatDate(cachedAt) + ' · 缓存数据';
+    }
+  }
+
+  /* 从 GitHub Search API 获取本周热门 */
+  function fetchTrending() {
+    listEl.innerHTML =
+      '<div class="trending-loading"><div class="spinner"></div><span>加载中...</span></div>';
+
+    // 最近一周创建的项目，按 star 排序
+    var since = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+      .toISOString().slice(0, 10);
+    var apiUrl = 'https://api.github.com/search/repositories' +
+      '?q=created:%3E' + since + '+stars:%3E50' +
+      '&sort=stars&order=desc&per_page=15';
+
+    fetch(apiUrl, { headers: { 'Accept': 'application/vnd.github.v3+json' } })
+      .then(function (r) {
+        if (!r.ok) throw new Error('API 请求失败(' + r.status + ')');
+        return r.json();
+      })
+      .then(function (data) {
+        if (!data.items || !data.items.length) {
+          throw new Error('本周暂无热门项目');
+        }
+        var cache = {
+          repos: data.items,
+          cachedAt: new Date().toISOString(),
+        };
+        try {
+          localStorage.setItem(CACHE_KEY, JSON.stringify(cache));
+        } catch (e) { /* localStorage 满了，忽略 */ }
+        render(data.items, cache.cachedAt);
+      })
+      .catch(function (err) {
+        console.warn('GitHub Trending 获取失败:', err.message);
+        // 尝试从缓存读取
+        try {
+          var raw = localStorage.getItem(CACHE_KEY);
+          if (raw) {
+            var cache = JSON.parse(raw);
+            if (cache.repos && cache.repos.length) {
+              render(cache.repos, cache.cachedAt);
+              listEl.insertAdjacentHTML('afterbegin',
+                '<div style="text-align:center;font-size:0.6rem;color:var(--pink);padding:4px 0">（网络请求失败，当前为缓存数据）</div>');
+              return;
+            }
+          }
+        } catch (e) {}
+        showError(err.message || '获取失败');
+      });
+  }
+
+  /* 检查缓存 */
+  try {
+    var raw = localStorage.getItem(CACHE_KEY);
+    if (raw) {
+      var cache = JSON.parse(raw);
+      if (cache.repos && cache.repos.length) {
+        var age = Date.now() - new Date(cache.cachedAt || 0).getTime();
+        // 缓存未过期，直接渲染
+        if (age < CACHE_TTL) {
+          render(cache.repos, cache.cachedAt);
+          return;
+        }
+        // 过期了，先显示旧数据，后台刷新
+        render(cache.repos, cache.cachedAt);
+      }
+    }
+  } catch (e) {}
+
+  // 发起请求
+  fetchTrending();
+})();
 </script>
 
 </body>
