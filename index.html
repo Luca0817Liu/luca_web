@@ -315,6 +315,123 @@
       margin-top: auto;
     }
 
+    /* ═══════ 照片墙 ═══════ */
+    .photo-wall {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 12px;
+    }
+    .photo-item {
+      position: relative;
+      border-radius: 6px;
+      overflow: hidden;
+      aspect-ratio: 1;
+      cursor: pointer;
+      transition: transform 0.35s cubic-bezier(.34,1.56,.64,1), box-shadow 0.3s;
+      box-shadow: 3px 4px 0px rgba(0,0,0,0.08), 0 2px 10px rgba(0,0,0,0.06);
+      background: white;
+      padding: 5px 5px 28px;
+    }
+    .photo-item:nth-child(3n+1) { transform: rotate(-1.5deg); }
+    .photo-item:nth-child(3n+2) { transform: rotate(1.2deg); margin-top: 8px; }
+    .photo-item:nth-child(3n)   { transform: rotate(-0.8deg); margin-top: -4px; }
+    .photo-item:nth-child(5n+2) { transform: rotate(1.8deg); margin-top: 12px; }
+    .photo-item:nth-child(7n+4) { transform: rotate(-2deg); margin-top: 6px; }
+    .photo-item:hover {
+      transform: rotate(0deg) scale(1.1) !important;
+      box-shadow: 6px 10px 0px rgba(255,143,171,0.25), 0 12px 30px rgba(0,0,0,0.15);
+      z-index: 10;
+    }
+    .photo-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 3px;
+      display: block;
+    }
+    .photo-item .photo-label {
+      position: absolute;
+      bottom: 5px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 0.6rem;
+      color: var(--text-light);
+      font-style: italic;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding: 0 4px;
+    }
+    /* 灯箱 */
+    .lightbox-overlay {
+      display: flex;
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      background: rgba(0,0,0,0.85);
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .lightbox-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .lightbox-overlay img {
+      max-width: 90vw;
+      max-height: 90vh;
+      border-radius: 8px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+      object-fit: contain;
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      font-size: 2rem;
+      color: white;
+      cursor: pointer;
+      z-index: 1000;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,255,255,0.15);
+      border-radius: 50%;
+      transition: background 0.2s;
+    }
+    .lightbox-close:hover { background: rgba(255,255,255,0.3); }
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 2.5rem;
+      color: white;
+      cursor: pointer;
+      z-index: 1000;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,255,255,0.12);
+      border-radius: 50%;
+      transition: background 0.2s;
+      user-select: none;
+    }
+    .lightbox-nav:hover { background: rgba(255,255,255,0.3); }
+    .lightbox-prev { left: 20px; }
+    .lightbox-next { right: 20px; }
+
+    @media (max-width: 600px) {
+      .photo-wall { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    }
+
     /* ═══════ 个人多媒体：拍立得 + 老电视 ═══════ */
     /* 拍立得图片区 */
     .polaroid-scatter {
@@ -635,6 +752,24 @@
     </div>
   </section>
 
+  <!-- ══ Luca的海洋公园之旅 - 照片墙 ══ -->
+  <section class="fade-in">
+    <div class="section-head">
+      <span class="doodle-icon">🌊</span>
+      <h2>Luca 的海洋公园之旅</h2>
+    </div>
+    <div class="photo-wall" id="photoWall">
+      <!-- JS 动态生成 -->
+    </div>
+    <!-- 灯箱 -->
+    <div class="lightbox-overlay" id="lightbox">
+      <span class="lightbox-close" id="lightboxClose">✕</span>
+      <span class="lightbox-nav lightbox-prev" id="lightboxPrev">‹</span>
+      <img id="lightboxImg" src="" alt="" />
+      <span class="lightbox-nav lightbox-next" id="lightboxNext">›</span>
+    </div>
+  </section>
+
   <!-- ══ 个人多媒体：拍立得图片 + 老电视视频 ══ -->
   <section class="fade-in">
     <div class="section-head">
@@ -725,6 +860,76 @@
 </footer>
 
 <script>
+/* ═══════════════════════════════════════════
+   照片墙 + 灯箱
+═══════════════════════════════════════════ */
+(function () {
+  const photos = [
+    { file: 'park_photos/IMG_20260607_094832.jpg', label: '出发！海洋公园' },
+    { file: 'park_photos/IMG_20260607_095237.jpg', label: '海洋奇观' },
+    { file: 'park_photos/IMG_20260607_100631.jpg', label: '海底世界' },
+    { file: 'park_photos/IMG_20260607_105541.jpg', label: '快乐时刻' },
+    { file: 'park_photos/IMG_20260607_110252.jpg', label: '可爱的它' },
+    { file: 'park_photos/IMG_20260607_112145.jpg', label: '精彩表演' },
+    { file: 'park_photos/IMG_20260607_113923.jpg', label: '奇妙生物' },
+    { file: 'park_photos/IMG_20260607_120120.jpg', label: '午餐时光' },
+    { file: 'park_photos/IMG_20260607_123435.jpg', label: '午后漫步' },
+    { file: 'park_photos/IMG_20260607_131021.jpg', label: '水母馆' },
+    { file: 'park_photos/IMG_20260607_132514.jpg', label: '鲨鱼隧道' },
+    { file: 'park_photos/IMG_20260607_133821.jpg', label: '珊瑚礁' },
+    { file: 'park_photos/IMG_20260607_142731.jpg', label: '海豚湾' },
+    { file: 'park_photos/IMG_20260607_144634.jpg', label: '极地天地' },
+    { file: 'park_photos/IMG_20260607_150034.jpg', label: '企鹅之家' },
+    { file: 'park_photos/IMG_20260607_151309.jpg', label: '雨林探险' },
+    { file: 'park_photos/IMG_20260607_154107.jpg', label: '缆车风光' },
+    { file: 'park_photos/IMG_20260607_160549.jpg', label: '山顶美景' },
+    { file: 'park_photos/IMG_20260607_171550.jpg', label: '黄昏时分' },
+    { file: 'park_photos/IMG_20260607_172606.jpg', label: '再见海洋公园' },
+  ];
+
+  const wall = document.getElementById('photoWall');
+  photos.forEach((p, i) => {
+    const div = document.createElement('div');
+    div.className = 'photo-item';
+    div.innerHTML = `<img src="${p.file}" alt="${p.label}" loading="lazy" /><span class="photo-label">${p.label}</span>`;
+    div.addEventListener('click', () => openLightbox(i));
+    wall.appendChild(div);
+  });
+
+  let currentIdx = 0;
+  const overlay = document.getElementById('lightbox');
+  const img = document.getElementById('lightboxImg');
+
+  function openLightbox(idx) {
+    currentIdx = idx;
+    img.src = photos[currentIdx].file;
+    img.alt = photos[currentIdx].label;
+    overlay.classList.add('open');
+  }
+  function closeLightbox() { overlay.classList.remove('open'); }
+  function prevPhoto() {
+    currentIdx = (currentIdx - 1 + photos.length) % photos.length;
+    img.src = photos[currentIdx].file;
+    img.alt = photos[currentIdx].label;
+  }
+  function nextPhoto() {
+    currentIdx = (currentIdx + 1) % photos.length;
+    img.src = photos[currentIdx].file;
+    img.alt = photos[currentIdx].label;
+  }
+
+  document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+  document.getElementById('lightboxPrev').addEventListener('click', (e) => { e.stopPropagation(); prevPhoto(); });
+  document.getElementById('lightboxNext').addEventListener('click', (e) => { e.stopPropagation(); nextPhoto(); });
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) closeLightbox(); });
+  document.addEventListener('keydown', (e) => {
+    if (!overlay.classList.contains('open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') prevPhoto();
+    if (e.key === 'ArrowRight') nextPhoto();
+  });
+})();
+
 /* ═══════════════════════════════════════════
    背景涂鸦
 ═══════════════════════════════════════════ */
